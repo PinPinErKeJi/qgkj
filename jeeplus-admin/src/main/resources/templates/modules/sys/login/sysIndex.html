@@ -1,0 +1,95 @@
+<%
+layout("/include/_container.html", {title:"首页", parent:"工作台"}){
+%>
+<style>
+	.widget{
+		height: 100%;
+		width: 100%;
+	}
+	.task-stat {
+		position: relative;
+		height: 100%;
+		width: 100%;
+		border-radius: 5px;
+		font-family: "Open Sans",sans-serif;
+		overflow: hidden;
+		color: #FFF;
+	}
+	.task-stat .visual {
+		position: absolute;
+		top: 0;
+		left: 0;
+		padding: 10px 0 0 10px;
+	}
+	.task-stat .visual>i {
+		color: #FFF;
+		opacity: .4;
+		filter: alpha(opacity=10);
+		font-size: 60px;
+		line-height: 65px;
+	}
+	.task-stat .details {
+		position: absolute;
+		right: 10px;
+		top: 10px;
+	}
+	.task-stat .details .number {
+		text-align: right;
+		font-size: 32px;
+		line-height: 36px;
+		letter-spacing: -1px;
+		margin-bottom: 0;
+		font-weight: 300;
+	}
+	.task-stat .details .desc {
+		text-align: right;
+		font-size: 15px;
+		padding-top: 5px;
+	}
+	.task-stat .more {
+		display: block;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		clear: both;
+		padding: 4px 10px;
+		text-transform: uppercase;
+		font-weight: 300;
+		font-size: 12px;
+		opacity: .8;
+		filter: alpha(opacity=70);
+		text-decoration: none;
+		color: #FFF;
+		cursor: pointer;
+	}
+	.task-stat .more>i {
+		display: inline-block;
+		margin-top: 0;
+		float: right;
+		font-size: 15px;
+		color: #fff;
+		opacity: .8;
+	}
+	.task-stat-container{
+		text-align:left;
+		margin-bottom: 20px;
+		padding: 20px;
+		border-radius: 4px;
+		color: rgb(255, 255, 255); height: 100%;
+	}
+	.task-stat-link{
+		position: absolute;
+		color: white;
+		right: 0px; top: 0px;
+		padding: 2px 4px;
+		border-radius: 4px;
+		font-size: 12px;
+		background: rgba(255, 255, 255, 0.3);
+	}
+
+</style>
+
+
+
+<% } %>

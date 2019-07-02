@@ -1,0 +1,124 @@
+<% layout("/include/_dialog.html"){ %>
+<link rel="stylesheet" href="${ctxStatic}/layui/css/layui.css" />
+<script type="text/javascript">
+
+		function save() {
+            var isValidate = jp.validateForm('#inputForm');//校验表单
+            if(!isValidate){
+                return false;
+			}else{
+                var index = jp.loading();
+                jp.post("${ctx}/jcda_banci/jcdabanci/save",$('#inputForm').serialize(),function(data){
+                    if(data.success){
+                        parent.refresh();
+                        var dialogIndex = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                        parent.layer.close(dialogIndex);
+                        jp.toastr_success(data.msg)
+
+                    }else{
+                        jp.toastr_error(data.msg);
+                    }
+                    jp.close(index);
+                })
+			}
+
+        }
+	</script>
+<div class="white-box">
+	<form id="inputForm" method="post" class="form-horizontal">
+		<input type="hidden" name="id" value="${jcdabanci.id!}" />
+		<table class="table table-bordered">
+			<tbody>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">班次名称：</label></td>
+					<td class="width-35"><#select path="banci"
+							value="${jcdabanci.banci!}" items="${fn.getDictList('banci')}"
+							itemLabel="label" itemValue="value" class="" /></td>
+					<td class="width-15 active"><label class="pull-right">简称：</label></td>
+					<td class="width-35"><input name="bancij"
+						value="${jcdabanci.bancij!}" class="jp-input " /></td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">班段：</label></td>
+					<td class="width-35"><#select path="banduan"
+							value="${jcdabanci.banduan!}"
+							items="${fn.getDictList('banduan')}" itemLabel="label"
+							itemValue="value" class="" /></td>
+
+					<td class="width-15 active"></td>
+					<td class="width-35"></td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">上班打卡开始时间：</label></td>
+					<td class="width-35"><span class="jp-calendar-picker">
+							<input readonly="readonly" id="dkkssj" name="dkkssj" placeholder="请选择日期"
+							class="jp-calendar-picker-input jp-input   "
+							value="${jcdabanci.dkkssj!}">
+							<span class="jp-calendar-picker-icon"></span>
+					</span></td>
+					<td class="width-15 active"><label class="pull-right">上班打开结束时间：</label></td>
+					<td class="width-35"><span class="jp-calendar-picker">
+							<input readonly="readonly" id="sbsj" name="sbsj" placeholder="请选择日期"
+							class="jp-calendar-picker-input jp-input   "
+							value="${jcdabanci.sbsj!}">
+							<span class="jp-calendar-picker-icon"></span>
+					</span></td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">下班打卡开始时间：</label></td>
+					<td class="width-35"><span class="jp-calendar-picker">
+							<input readonly="readonly" id="xbsj" name="xbsj" placeholder="请选择日期"
+							class="jp-calendar-picker-input jp-input   "
+							value="${jcdabanci.xbsj!}">
+							<span class="jp-calendar-picker-icon"></span>
+					</span></td>
+					<td class="width-15 active"><label class="pull-right">下班打卡结束时间：</label></td>
+					<td class="width-35"><span class="jp-calendar-picker">
+							<input readonly="readonly" id="dkjssj" name="dkjssj" placeholder="请选择日期"
+							class="jp-calendar-picker-input jp-input   "
+							value="${jcdabanci.dkjssj!}">
+							<span class="jp-calendar-picker-icon"></span>
+					</span></td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">计小时：</label></td>
+					<td class="width-35"><input name="jxs"
+						value="${jcdabanci.jxs!}" class="jp-input " /></td>
+
+
+					<td class="width-15 active"><label class="pull-right">计天数：</label></td>
+					<td class="width-35"><input name="jts"
+						value="${jcdabanci.jts!}" class="jp-input " /></td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+<script src="${ctxStatic}/layui/layui.js"></script>
+<script type="text/javascript">
+layui.use('laydate', function(){
+	var laydate = layui.laydate;
+	//时间选择器
+	laydate.render({
+	  elem: '#sbsj'
+	  ,type: 'time'
+	  ,theme: 'molv'
+	});
+	laydate.render({
+	  elem: '#xbsj'
+	  ,type: 'time'
+	  ,theme: 'molv'
+	});
+	laydate.render({
+	  elem: '#dkkssj'
+	  ,type: 'time'
+	  ,theme: 'molv'
+	});
+	laydate.render({
+	  elem: '#dkjssj'
+	  ,type: 'time'
+	  ,theme: 'molv'
+	});
+});
+</script>
+<% } %>

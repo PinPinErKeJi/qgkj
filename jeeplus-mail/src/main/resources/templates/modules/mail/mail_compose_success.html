@@ -1,0 +1,24 @@
+<%
+layout("/include/_container.html", {title:"发信结果", parent:"我的信箱"}){
+%>
+<script>
+    var index = jp.info("成功");
+    jp.close(index);
+</script>
+<div class="white-box">
+    <div style="text-align: center">
+        <div class="m-b-md">
+            <img alt="image" style="width:150px;" class="img-circle circle-border"
+                 src="${ctxStatic}/common/img/success.jpg">
+        </div>
+        <% if(mailCompose.status == '0'){ %>
+        <p>邮件已经保存到草稿箱！</p>
+        <%} else if(mailCompose.status == '1') { %>
+        <p>邮件发送成功！</p>
+        <% } %>
+
+        <a href="${ctx}/mailBox/list?orderBy=sendtime desc" class="jp-btn-primary jp-btn jp-btn-block"
+           data-pjax>返回</a>
+    </div>
+</div>
+<% } %>

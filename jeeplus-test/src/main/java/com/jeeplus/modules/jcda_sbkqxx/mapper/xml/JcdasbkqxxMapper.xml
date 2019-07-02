@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.jcda_sbkqxx.mapper.JcdasbkqxxMapper">
+    
+	<sql id="jcdasbkqxxColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.sb_id AS "sb.id",
+		b.sbxlh AS "sbxlh",
+		a.code AS "code",
+		a.name AS "name",
+		a.date AS "date",
+		a.zdy1 AS "zdy1",
+		a.zdy2 AS "zdy2",
+		a.zdy3 AS "zdy3",
+		a.zdy4 AS "zdy4",
+		a.zdy5 AS "zdy5",
+		a.zdy6 AS "zdy6",
+		a.zdy7 AS "zdy7",
+		a.zdy8 AS "zdy8",
+		a.zdy9 AS "zdy9",
+		a.zdy10 AS "zdy10",
+		a.zdy11 AS "zdy11",
+		b.name AS "sb.name"
+	</sql>
+	
+	<sql id="jcdasbkqxxJoins">
+			LEFT JOIN jcda_sbmc_view b ON b.id = a.sb_id
+	</sql>
+	
+	<select id="countAtendanceByEquipment" resultType="int">
+		select count(*) from jcda_sbkqxx  a
+		where a.del_flag ='0' and a.sb_id = #{equipmentId}
+		<if test="employeeId != null">
+			and a.zdy1 = #{employeeId}
+		</if>
+		<if test="start != null and end != null ">
+			AND a.date BETWEEN #{start} AND #{end}
+		</if>
+	</select>
+	<!-- <update id="updateSbkState">		
+		update  jcda_sbkqxx set zdy5 = '0' where id = #{ids}
+	</update> -->
+	<select id="findAtendance" resultType="com.jeeplus.modules.api.bean.JcdasbkqxxBean">
+		select a.id as "id",a.sb_id AS "sb.id",a.sbxlh AS "sbxlh",a.code AS "code",a.name AS "name",a.date AS "date", 
+		a.zdy1 AS "zdy1",a.zdy2 AS "zdy2",a.zdy3 AS "zdy3",a.zdy4 AS "zdy4",a.zdy5 AS "zdy5",
+		a.zdy6 AS "zdy6",a.zdy7 AS "zdy7",a.zdy8 AS "zdy8",a.zdy9 AS "zdy9",a.zdy10 AS "zdy10",
+		a.zdy11 AS "zdy11"
+		from jcda_sbkqxx a 
+		where a.del_flag ='0'  and a.zdy5 is NULL
+	</select>
+	
+	<select id="findApp" resultType="com.jeeplus.modules.api.bean.JcdasbkqxxBean">
+		select a.id as "id",a.sb_id AS "sb.id",a.sbxlh AS "sbxlh",a.code AS "code",a.name AS "name",a.date AS "date", 
+		a.zdy1 AS "zdy1"
+		from jcda_sbkqxx a 
+		where a.del_flag ='0' 
+		<if test="sb_id != null">
+			 and a.sb_id =#{sb_id}
+		</if>
+		<if test="code != null">
+		     and a.code =#{code}
+		</if>
+		<if test="beginDate != null and endDate != null">
+			 and a.date &gt;= #{beginDate} and a.date &lt;= #{endDate}
+		</if>
+		order by a.date desc
+		limit #{from},#{pageSize}
+	</select>
+	
+	<select id="findAtendanceByEquipment" resultType="com.jeeplus.modules.jcda_sbkqxx.entity.AttendanceRecordInfo">
+		select a.id,a.code AS "employeeCode",a.name AS "employeeName",a.zdy1 AS "employeeId",
+		a.date AS "date",a.zdy4 AS "photo" from jcda_sbkqxx a 
+		where a.del_flag ='0' and a.sb_id = #{equipmentId}
+		<if test="employeeId != null">
+			and a.zdy1 = #{employeeId}
+		</if>
+		<if test="start != null and end != null ">
+			AND a.date BETWEEN #{start} AND #{end}
+		</if>
+		order by a.date desc
+		limit #{from},#{size}
+	</select>
+	
+	<select id="get" resultType="Jcdasbkqxx" >
+		SELECT 
+			<include refid="jcdasbkqxxColumns"/>
+		FROM jcda_sbkqxx a
+		<include refid="jcdasbkqxxJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Jcdasbkqxx" >
+		SELECT 
+			<include refid="jcdasbkqxxColumns"/>
+		FROM jcda_sbkqxx a
+		<include refid="jcdasbkqxxJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+                    <if test="sb != null  and sb.id != null and sb.id != ''">
+                        AND (b.id = #{sb.id} OR b.parent_ids LIKE
+                        <if test="_databaseId == 'oracle'">'%,'||#{sb.id}||',%')</if>
+                        <if test="_databaseId == 'mysql'">CONCAT('%,', #{sb.id}, ',%'))</if>
+                        <if test="_databaseId == 'mssql'">'%'+#{sb.id}+'%')</if>
+                    </if>
+			<if test="code != null and code != ''">
+				AND a.code LIKE 
+					<if test="_databaseId == 'oracle'">'%'||#{code}||'%'</if>
+					<if test="_databaseId == 'mssql'">'%'+#{code}+'%'</if>
+					<if test="_databaseId == 'mysql'">concat('%',#{code},'%')</if>
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="_databaseId == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="_databaseId == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="_databaseId == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="beginDate != null and endDate != null ">
+				AND a.date BETWEEN #{beginDate} AND #{endDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.date desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Jcdasbkqxx" >
+		SELECT 
+			<include refid="jcdasbkqxxColumns"/>
+		FROM jcda_sbkqxx a
+		<include refid="jcdasbkqxxJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jcda_sbkqxx(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			sb_id,
+			sbxlh,
+			code,
+			name,
+			date,
+			zdy1,
+			zdy2,
+			zdy3,
+			zdy4,
+			zdy5,
+			zdy6,
+			zdy7,
+			zdy8,
+			zdy9,
+			zdy10,
+			zdy11
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{sb.id},
+			#{sbxlh},
+			#{code},
+			#{name},
+			#{date},
+			#{zdy1},
+			#{zdy2},
+			#{zdy3},
+			#{zdy4},
+			#{zdy5},
+			#{zdy6},
+			#{zdy7},
+			#{zdy8},
+			#{zdy9},
+			#{zdy10},
+			#{zdy11}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jcda_sbkqxx SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			sb_id = #{sb.id},
+			sbxlh = #{sbxlh},
+			code = #{code},
+			name = #{name},
+			date = #{date},
+			zdy1 = #{zdy1},
+			zdy2 = #{zdy2},
+			zdy3 = #{zdy3},
+			zdy4 = #{zdy4},
+			zdy5 = #{zdy5},
+			zdy6 = #{zdy6},
+			zdy7 = #{zdy7},
+			zdy8 = #{zdy8},
+			zdy9 = #{zdy9},
+			zdy10 = #{zdy10},
+			zdy11 = #{zdy11}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM jcda_sbkqxx
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE sb_id = #{sb.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE jcda_sbkqxx SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE sb_id = #{sb.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="Jcdasbkqxx" statementType="STATEMENT">
+		select * FROM jcda_sbkqxx  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

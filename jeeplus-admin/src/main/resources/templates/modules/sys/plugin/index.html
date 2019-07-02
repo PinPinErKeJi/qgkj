@@ -1,0 +1,74 @@
+<%
+layout("/include/_container.html", {title:"已安装插件", parent:"插件管理"}){
+%>
+<script>
+   $(document).ready(function () {
+       jp.get("${ctx}/sys/plugin/data", function (data) {
+           var getTpl = demo.innerHTML
+               , view = document.getElementById('view');
+           laytpl(getTpl).render(data, function (html) {
+               view.innerHTML = html;
+           });
+       });
+   })
+
+</script>
+<style>
+    .jp-card{
+        width: 200px;
+    }
+    .jp-card-cover1 {
+        background-color: #efefef;
+        padding-top: 0px;
+        padding-left: 0px;
+        text-align: center;
+        display: block;
+        height: 160px;
+        margin: 5px;
+        color: rgba(0,0,0,0.5);
+    }
+    .tooltip-content {
+        /*width: 160px;*/
+        /*margin: 0 0 20px -80px;*/
+        padding: 20px;
+    }
+</style>
+
+<script id="demo" type="text/html">
+    {{#  d.rows.forEach(function(item,index,array){ }}
+    <div class="jp-card jp-card-bordered">
+        <div class="jp-card-cover1" >
+            <i class="{{item.icon}}" style="font-size: 64px"></i>
+            <div class="jp-card-meta-detail">
+                <font style="font-weight: 700"> {{item.name}}</font>
+                <p style="font-weight: 700">{{item.version}}</p>
+            </div>
+
+
+            <span class="mytooltip tooltip-effect-1">
+                <span class="tooltip-item">详情</span>
+                <span class="tooltip-content clearfix">
+                      <label>{{item.name}}(<a href="{{item.site}}" target="_blank">访问官网</a>)</label>
+                      <span class="tooltip-text">简介: {{item.description}}</span>
+                </span>
+            </span>
+        </div>
+    </div>
+    {{#  }); }}
+
+
+</script>
+
+
+<div class="white-box">
+    <div class="row">
+
+
+
+
+        <div id="view"></div>
+
+
+    </div>
+
+    <% } %>

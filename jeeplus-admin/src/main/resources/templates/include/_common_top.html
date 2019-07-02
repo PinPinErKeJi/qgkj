@@ -1,0 +1,139 @@
+<script id="notifyTpl" type="text/html">
+
+        <li>
+            <div class="drop-title">你有{{d.total}} 条未读通知</div>
+        </li>
+        <li>
+            <div class="message-center">
+                {{# d.rows.forEach(function (notify){  }}
+                <a href="${ctx}/oa/oaNotify/form?isSelf=true&id={{notify.id}}" data-pjax>
+                    <div class="user-img">
+                        <img src="{{notify.createBy.photo}}" alt="{{notify.createBy.name}}" height="36px" width="36px" class="img-circle">
+                        <span class="profile-status online pull-right"></span>
+                    </div>
+                    <div class="mail-contnet">
+                        <h5>{{notify.createBy.name}}</h5>
+                        <span class="mail-desc">{{notify.title}}</span>
+                        <span class="time">{{notify.createDate}}</span>
+                    </div>
+                </a>
+                {{# }) }}
+
+            </div>
+        </li>
+        <li>
+            <a class="text-center" href="${ctx}/oa/oaNotify/self" data-pjax> <strong>查看全部通知</strong> <i class="fa fa-angle-right"></i> </a>
+        </li>
+
+</script>
+
+<script id="mailTpl" type="text/html">
+
+    <li>
+        <div class="drop-title">你有{{d.total}} 条未读站内信</div>
+    </li>
+    <li>
+        <div class="message-center">
+            {{# d.rows.forEach(function (mail){  }}
+            <a href="${ctx}/mailBox/detail?id={{mail.id}}" data-pjax>
+                <div class="user-img">
+                    <img src="{{mail.sender.photo}}" alt="{{mail.sender.name}}" height="36px" width="36px"  class="img-circle">
+                    <span class="profile-status online pull-right"></span>
+                </div>
+                <div class="mail-contnet">
+                    <h5>{{mail.sender.name}}</h5>
+                    <span class="mail-desc">{{mail.mail.title}}</span>
+                    <span class="time">{{mail.sendtime}}</span>
+                </div>
+            </a>
+            {{# }) }}
+
+        </div>
+    </li>
+    <li>
+        <a class="text-center" href="${ctx}/mailBox/list" data-pjax> <strong>查看全部站内信</strong> <i class="fa fa-angle-right"></i> </a>
+    </li>
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        jp.post("${ctx}/oa/oaNotify/self/data",{isSelf:true,pageSize:5,pageNo:1},function (data) {
+            var notifyTpl = $("#notifyTpl").html()
+                ,view = document.getElementById('notifyView');
+            laytpl(notifyTpl).render(data, function(html){
+                view.innerHTML = html;
+            });
+        })
+
+        jp.post("${ctx}/mailBox/data",{readstatus:0},function (data) {
+            var mailTpl = $("#mailTpl").html()
+                ,view = document.getElementById('mailView');
+            laytpl(mailTpl).render(data, function(html){
+                view.innerHTML = html;
+            });
+        })
+    })
+
+</script>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="navbar-header">
+        <ul class="nav navbar-top-links navbar-left pull-left">
+            <li><a href="javascript:void(0)" id="jp-frame-menu-btn" style="margin-left: 10px" class="jp-frame-menu-btn open-close waves-effect waves-light hidden-xs"> <i class="fa fa-outdent"></i></a></li>
+            <li><a href="javascript:location.reload()"  class=" waves-effect waves-light hidden-xs" data-pjax> <i class="glyphicon glyphicon-repeat"></i></a></li>
+            <li><a href="javascript:void(0)" class="open-close waves-effect waves-light visible-xs"><i class=" fa fa-align-justify ti-menu"></i></a></li>
+            <li><a class=" waves-effect waves-light hidden-xs"></a></li>
+        </ul>
+
+        <ul class="nav navbar-top-links navbar-right pull-right">
+            <li>
+                <a  href="${ctx}" data-pjax>
+                    <i class="fa fa-home"  style="font-size: 16px"></i>
+                </a>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#">
+                    <i class="fa fa-bell" style="font-size: 16px" ></i>
+                    <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
+                </a>
+                <ul id="notifyView" class="dropdown-menu mailbox animated bounceInDown">
+
+                </ul>
+                <!-- /.dropdown-messages -->
+            </li>
+            <li>
+                <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#">
+                    <i class="fa fa-envelope-o" style="font-size: 16px" ></i>
+                    <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
+                </a>
+                <ul id="mailView" class="dropdown-menu mailbox animated bounceInDown">
+
+                </ul>
+            </li>
+            <li>
+                <a  id="right-side-toggle" >
+                    <i class="fa fa-dashboard"  style="font-size: 16px"></i>
+                </a>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#">
+
+                    <img src="${fn.getUser().photo}" alt="user-img" width="36px" height="36px" class="img-circle">
+                    <b class="hidden-xs">${fn.getUser().name}</b>
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-user animated flipInY">
+                    <li role="separator" class="divider"></li>
+                    <li><a href="${ctx }/sys/user/info" data-pjax><i class="fa fa-user"></i> 个人资料</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="${ctx}/logout"><i class="fa fa-power-off"></i> 安全退出</a></li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+    </div>
+    <!-- /.navbar-header -->
+    <!-- /.navbar-top-links -->
+    <!-- /.navbar-static-side -->
+</nav>

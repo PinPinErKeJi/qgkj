@@ -1,0 +1,32 @@
+<%
+layout("/include/_container.html", {title:"运行中的流程管理", parent:"流程管理"}){
+%>
+<!-- 搜索 -->
+<div id="search-collapse" class="collapse white-box" style="position:relative;margin-bottom: 5px">
+    <a class="jp-ti-close"
+       onclick="$('#search-collapse').fadeToggle()">
+        <i class="icon iconfont icon-guanbi"></i>
+    </a>
+    <form id="searchForm" class="form form-horizontal clearfix">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <label class="label-item single-overflow pull-left" title="流程实例ID：">流程实例ID：</label>
+            <input type="text" id="procInsId" name="procInsId" class="jp-input"/>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <label class="label-item single-overflow pull-left" title="流程定义ID：">流程定义ID：</label>
+            <input type="text" id="procDefKey" name="procDefKey" class="jp-input"/>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div style="margin-top:26px">
+                <a id="search" class="jp-btn jp-btn-primary"><i class="fa fa-search"></i> 查询</a>
+                <a id="reset" class="jp-btn"><i class="fa fa-refresh"></i> 重置</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="white-box">
+    <!-- 表格 -->
+    <table id="procInsTable"></table>
+</div>
+<% include("processRunningList.js"){} %>
+<% } %>

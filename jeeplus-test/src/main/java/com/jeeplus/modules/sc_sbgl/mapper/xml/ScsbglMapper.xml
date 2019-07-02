@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.sc_sbgl.mapper.ScsbglMapper">
+    
+	<sql id="scsbglColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.area AS "area",
+		a.org AS "org.id",
+		a.user_org AS "userorg.id",
+		a.location AS "location",
+		a.arry AS "arry",
+		a.kssj AS "kssj",
+		a.jssj AS "jssj",
+		a.state AS "state",
+		a.zdy1 AS "zdy1",
+		a.zdy2 AS "zdy2",
+		a.zdy3 AS "zdy3",
+		a.zdy4 AS "zdy4",
+		a.zdy5 AS "zdy5",
+		a.zdy6 AS "zdy6",
+		a.zdy7 AS "zdy7",
+		a.zdy8 AS "zdy8",
+		a.zdy9 AS "zdy9",
+		a.zdy10 AS "zdy10",
+		org.name AS "org.name",
+		userorg.name AS "userorg.name"
+	</sql>
+	
+	<sql id="scsbglJoins">
+		
+		LEFT JOIN sys_office org ON org.id = a.org
+		LEFT JOIN sys_office userorg ON userorg.id = a.user_org
+	</sql>
+	
+    
+	<select id="get" resultType="Scsbgl" >
+		SELECT 
+			<include refid="scsbglColumns"/>
+		FROM sc_sbgl a
+		<include refid="scsbglJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Scsbgl" >
+		SELECT 
+			<include refid="scsbglColumns"/>
+		FROM sc_sbgl a
+		<include refid="scsbglJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Scsbgl" >
+		SELECT 
+			<include refid="scsbglColumns"/>
+		FROM sc_sbgl a
+		<include refid="scsbglJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sc_sbgl(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			area,
+			org,
+			user_org,
+			location,
+			arry,
+			kssj,
+			jssj,
+			state,
+			zdy1,
+			zdy2,
+			zdy3,
+			zdy4,
+			zdy5,
+			zdy6,
+			zdy7,
+			zdy8,
+			zdy9,
+			zdy10
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{area},
+			#{org.id},
+			#{userorg.id},
+			#{location},
+			#{arry},
+			#{kssj},
+			#{jssj},
+			#{state},
+			#{zdy1},
+			#{zdy2},
+			#{zdy3},
+			#{zdy4},
+			#{zdy5},
+			#{zdy6},
+			#{zdy7},
+			#{zdy8},
+			#{zdy9},
+			#{zdy10}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sc_sbgl SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			area = #{area},
+			org = #{org.id},
+			user_org = #{userorg.id},
+			location = #{location},
+			arry = #{arry},
+			kssj = #{kssj},
+			jssj = #{jssj},
+			state = #{state},
+			zdy1 = #{zdy1},
+			zdy2 = #{zdy2},
+			zdy3 = #{zdy3},
+			zdy4 = #{zdy4},
+			zdy5 = #{zdy5},
+			zdy6 = #{zdy6},
+			zdy7 = #{zdy7},
+			zdy8 = #{zdy8},
+			zdy9 = #{zdy9},
+			zdy10 = #{zdy10}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM sc_sbgl
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE sc_sbgl SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="Scsbgl" statementType="STATEMENT">
+		select * FROM sc_sbgl  where ${propertyName} = '${value}'
+	</select>
+	<!--	查询设备是否存在-->
+<!--	<select id="selectSbCount">-->
+<!--		select COUNT(*) from sc_sbgl  where arry = #{arry}-->
+<!--	</select>-->
+	<!--	修改设备状态-->
+<!--	<update id="updateSbState">-->
+<!--		update sc_sbgl set state = #{state} where arry = #{arry}-->
+<!--	</update>-->
+</mapper>

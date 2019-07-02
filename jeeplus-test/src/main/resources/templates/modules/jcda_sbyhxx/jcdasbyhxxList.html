@@ -1,0 +1,126 @@
+<% layout("/include/_container.html", {title:"列表", parent:"设备用户信息"}){ %>
+<div class="row">
+	<div class="col-sm-3 col-md-2" style="padding-right: 5px">
+		<div class="white-box">
+			<div>
+				<div style="width: calc(105% - 50px); float: left">
+					<span class="jp-input-search jp-input-affix-wrapper "
+						style="margin-bottom: 5px;"> <input id="search_q"
+						placeholder="查找..." class="jp-input" type="text"> <span
+						class="jp-input-suffix"> <i
+							class="jp-icon jp-icon-search jp-input-search-icon"></i>
+					</span>
+					</span>
+				</div>
+				<!--  <div style="width: 45px; float:right">
+               <button  class="jp-btn jp-btn-primary"  onclick="jp.openSaveDialog('新建设备名称', '${ctx}/jcda_sbyhxx/jcdaSbmcView/form/add','800px', '500px')">
+                <i class="fa fa-plus"></i>
+                </button>
+            </div> -->
+			</div>
+			<div id="jcdaSbmcViewjsTree"></div>
+		</div>
+	</div>
+	<div class="col-sm-9 col-md-10" style="padding-left: 0px">
+
+
+		<!-- 文件上传 -->
+		<div id="import-collapse" class="white-box collapse"
+			style="position: relative; margin-bottom: 5px">
+			<a class="jp-ti-close" onclick="$('#import-collapse').fadeToggle()">
+				<i class="icon iconfont icon-guanbi"></i>
+			</a>
+			<form id="importForm" method="POST" enctype="multipart/form-data"
+				class="form form-horizontal clearfix">
+				<div class="col-xs-12 col-sm-6">
+					<input name="file" type="file" class="required jp-input">只允许导入&ldquo;xls&rdquo;或&ldquo;xlsx&rdquo;格式文件！<br>
+
+				</div>
+				<div class="col-xs-12 col-sm-6">
+					<a id="btnImportExcel" class="jp-btn jp-btn-primary"><i
+						class="fa fa-upload"></i> 开始上传</a> <a id="btnDownloadTpl"
+						class="jp-btn"><i class="fa fa-download"></i> 下载模板</a>
+				</div>
+			</form>
+		</div>
+		<!-- 搜索框-->
+		<div id="search-collapse" class="white-box collapse"
+			style="position: relative; margin-bottom: 5px; display: none;">
+			<a class="jp-ti-close" onclick="$('#search-collapse').fadeToggle()">
+				<i class="icon iconfont icon-guanbi"></i>
+			</a>
+			<form id="searchForm" class="form form-horizontal clearfix">
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="设备名称：">设备名称：</label>
+					<#treeselect id="sb" name="sb.id" labelName="sb.name" title="设备名称"
+						url="/jcda_sbyhxx/jcdaSbmcView/treeData" extId="${jcdasbyhxx.id}"
+						class="jp-input " allowClear="true" />
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="设备序列号：">设备序列号：</label>
+					<input name="sbxlh" maxlength="64" class=" jp-input" />
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="用户编码：">用户编码：</label>
+					<input name="code" maxlength="64" class=" jp-input" />
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="用户名称：">用户名称：</label>
+					<input name="name" maxlength="64" class=" jp-input" />
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<div style="margin-top: 26px">
+						<a id="search" class="jp-btn jp-btn-primary"><i
+							class="fa fa-search"></i> 查询</a> <a id="reset" class="jp-btn"><i
+							class="fa fa-refresh"></i> 重置</a>
+					</div>
+				</div>
+			</form>
+
+		</div>
+
+		<div class="white-box">
+
+			<!-- 工具栏 -->
+			<div id="toolbar">
+				<!-- <% if(shiro.hasPermission("jcda_sbyhxx:jcdasbyhxx:add") ){ %>
+				<button id="add" class="jp-btn jp-btn-primary" onclick="add()">
+					<i class="glyphicon glyphicon-plus"></i> 新增
+				</button>
+				<% } %> <% if(shiro.hasPermission("jcda_sbyhxx:jcdasbyhxx:edit") ){
+				%>
+				<button id="edit" class="jp-btn" disabled onclick="edit()">
+					<i class="glyphicon glyphicon-edit"></i> 修改
+				</button>
+				<% } %>  -->
+				<% if(shiro.hasPermission("jcda_sbyhxx:jcdasbyhxx:del") ){
+				%>
+				<button id="remove" class="jp-btn jp-btn-danger" disabled
+					onclick="del()">
+					<i class="glyphicon glyphicon-remove"></i> 删除
+				</button>
+				<% } %>
+				<% if(shiro.hasPermission("jcda_sbyhxx:jcdasbyhxx:add") ){ %>
+				<button class="jp-btn jp-btn-primary" onclick="synchronize()">
+					人员同步
+				</button>
+				<% } %>
+				<!-- <% if(shiro.hasPermission("jcda_sbyhxx:jcdasbyhxx:import") ){ %>
+				<button id="import"  class="jp-btn" >
+					<i class="icon iconfont icon-Import"></i> 导入
+				</button>
+			<% } %>
+			 <% if(shiro.hasPermission("jcda_sbyhxx:jcdasbyhxx:export") ){ %>
+	        	<button id="export" class="jp-btn">
+					<i class="icon iconfont icon-export"></i> 导出
+				</button>
+			 <% } %> -->
+			</div>
+
+			<!-- 表格 -->
+			<table id="jcdasbyhxxTable" class="table-bordered"
+				data-toolbar="#toolbar"></table>
+		</div>
+	</div>
+		<% include("jcdaSbmcViewTreeList.js"){} %> <%
+		include("jcdasbyhxxList.js"){} %> <% } %>

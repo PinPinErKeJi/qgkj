@@ -1,0 +1,63 @@
+<%
+layout("/include/_container.html", {title:"定时任务", parent:"系统监控"}){
+%>
+<!-- 搜索 -->
+<div id="search-collapse" class="collapse white-box" style="position:relative;margin-bottom: 5px">
+    <a class="jp-ti-close"
+       onclick="$('#search-collapse').fadeToggle()">
+        <i class="icon iconfont icon-guanbi"></i>
+    </a>
+    <form id="searchForm" class="form form-horizontal clearfix">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <label class="label-item single-overflow pull-left" title="任务名：">任务名：</label>
+            <input name="name" maxlength="64" class=" jp-input input-sm"/>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div style="margin-top:26px">
+                <a id="search" class="jp-btn jp-btn-primary"><i class="fa fa-search"></i> 查询</a>
+                <a id="reset" class="jp-btn"><i class="fa fa-refresh"></i> 重置</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="white-box">
+    <!-- 工具栏 -->
+    <div id="toolbar">
+        <% if(shiro.hasPermission("monitor:scheduleJob:add")){ %>
+        <a id="add" class="jp-btn jp-btn-primary" href="${ctx}/monitor/scheduleJob/form" title="定时任务" data-pjax><i
+                class="glyphicon glyphicon-plus"></i> 新建</a>
+        <% } %>
+        <% if(shiro.hasPermission("monitor:scheduleJob:edit")){ %>
+        <button id="edit" class="jp-btn" disabled onclick="edit()">
+            <i class="glyphicon glyphicon-edit"></i> 修改
+        </button>
+        <% } %>
+        <% if(shiro.hasPermission("monitor:scheduleJob:del")){ %>
+        <button id="remove" class="jp-btn jp-btn-danger" disabled onclick="deleteAll()">
+            <i class="glyphicon glyphicon-remove"></i> 删除
+        </button>
+        <% } %>
+        <% if(shiro.hasPermission("monitor:scheduleJob:stop")){ %>
+        <button id="stop" class="jp-btn" disabled onclick="stop()">
+            <i class="glyphicon"></i> 暂停
+        </button>
+        <% } %>
+        <% if(shiro.hasPermission("monitor:scheduleJob:resume")){ %>
+        <button id="resume" class="jp-btn" disabled onclick="resume()">
+            <i class="glyphicon"></i> 启动
+        </button>
+        <% } %>
+        <% if(shiro.hasPermission("monitor:scheduleJob:startNow")){ %>
+        <button id="startNow" class="jp-btn" disabled onclick="startNow()">
+            <i class="glyphicon"></i> 立即运行一次
+        </button>
+        <% } %>
+    </div>
+
+    <!-- 表格 -->
+    <table id="table" data-toolbar="#toolbar"/>
+
+</div>
+<% include("scheduleJobList.js"){} %>
+<% } %>

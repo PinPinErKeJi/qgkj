@@ -1,0 +1,20 @@
+<div id="sidebar" class="navbar-default sidebar expand" role="navigation">
+
+	<div class="sidebar-nav slimscrollsidebar">
+		<div class="sidebar-head">
+			<h4>
+				<!--<a class="logo" href="${ctx}" data-pjax>-->
+				<!--<span class="fa-fw open-close">-->
+				<!--&lt;!&ndash;<i class="fa fa-plus show-menu"></i>&ndash;&gt;-->
+				<!--<i class="ti-close visible-xs"></i>-->
+				<!--</span>-->
+				<span class="show-menu">QN</span>
+				<span class="hide-menu">${fn.getProductName()}</span>
+				<!--</a>-->
+			</h4>
+		</div>
+		<ul class="nav" id="side-menu">
+			<#menu  value="${fn.getTopMenu()}">	</#menu>
+		</ul>
+	</div>
+</div>

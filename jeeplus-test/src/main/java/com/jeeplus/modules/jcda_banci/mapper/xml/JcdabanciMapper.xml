@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.jcda_banci.mapper.JcdabanciMapper">
+    
+	<sql id="jcdabanciColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.banci AS "banci",
+		a.banci_j AS "bancij",
+		a.banduan AS "banduan",
+		a.sbsj AS "sbsj",
+		a.xbsj AS "xbsj",
+		a.jxs AS "jxs",
+		a.jts AS "jts",
+		a.zdy1 AS "zdy1",
+		a.zdy2 AS "zdy2",
+		a.zdy3 AS "zdy3",
+		a.zdy4 AS "zdy4",
+		a.zdy5 AS "zdy5",
+		a.zdy6 AS "zdy6",
+		a.zdy7 AS "zdy7",
+		a.zdy8 AS "zdy8",
+		a.zdy9 AS "zdy9",
+		a.zdy10 AS "zdy10",
+		a.zdy11 AS "zdy11",
+		a.zdy12 AS "zdy12",
+		a.zdy13 AS "zdy13",
+		a.zdy14 AS "zdy14",
+		a.zdy15 AS "zdy15",
+		a.zdy16 AS "zdy16",
+		a.zdy17 AS "zdy17",
+		a.zdy18 AS "zdy18",
+		a.zdy19 AS "zdy19",
+		a.zdy20 AS "zdy20",
+		a.dkkssj AS "dkkssj",
+		a.dkjssj AS "dkjssj"
+	</sql>
+	
+	<sql id="jcdabanciJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="Jcdabanci" >
+		SELECT 
+			<include refid="jcdabanciColumns"/>
+		FROM jcda_banci a
+		<include refid="jcdabanciJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Jcdabanci" >
+		SELECT 
+			<include refid="jcdabanciColumns"/>
+		FROM jcda_banci a
+		<include refid="jcdabanciJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Jcdabanci" >
+		SELECT 
+			<include refid="jcdabanciColumns"/>
+		FROM jcda_banci a
+		<include refid="jcdabanciJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jcda_banci(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			banci,
+			banci_j,
+			banduan,
+			sbsj,
+			xbsj,
+			jxs,
+			jts,
+			zdy1,
+			zdy2,
+			zdy3,
+			zdy4,
+			zdy5,
+			zdy6,
+			zdy7,
+			zdy8,
+			zdy9,
+			zdy10,
+			zdy11,
+			zdy12,
+			zdy13,
+			zdy14,
+			zdy15,
+			zdy16,
+			zdy17,
+			zdy18,
+			zdy19,
+			zdy20,
+			dkkssj,
+			dkjssj
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{banci},
+			#{bancij},
+			#{banduan},
+			#{sbsj},
+			#{xbsj},
+			#{jxs},
+			#{jts},
+			#{zdy1},
+			#{zdy2},
+			#{zdy3},
+			#{zdy4},
+			#{zdy5},
+			#{zdy6},
+			#{zdy7},
+			#{zdy8},
+			#{zdy9},
+			#{zdy10},
+			#{zdy11},
+			#{zdy12},
+			#{zdy13},
+			#{zdy14},
+			#{zdy15},
+			#{zdy16},
+			#{zdy17},
+			#{zdy18},
+			#{zdy19},
+			#{zdy20},
+			#{dkkssj},
+			#{dkjssj}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jcda_banci SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			banci = #{banci},
+			banci_j = #{bancij},
+			banduan = #{banduan},
+			sbsj = #{sbsj},
+			xbsj = #{xbsj},
+			jxs = #{jxs},
+			jts = #{jts},
+			zdy1 = #{zdy1},
+			zdy2 = #{zdy2},
+			zdy3 = #{zdy3},
+			zdy4 = #{zdy4},
+			zdy5 = #{zdy5},
+			zdy6 = #{zdy6},
+			zdy7 = #{zdy7},
+			zdy8 = #{zdy8},
+			zdy9 = #{zdy9},
+			zdy10 = #{zdy10},
+			zdy11 = #{zdy11},
+			zdy12 = #{zdy12},
+			zdy13 = #{zdy13},
+			zdy14 = #{zdy14},
+			zdy15 = #{zdy15},
+			zdy16 = #{zdy16},
+			zdy17 = #{zdy17},
+			zdy18 = #{zdy18},
+			zdy19 = #{zdy19},
+			zdy20 = #{zdy20},
+			dkkssj = #{dkkssj},
+			dkjssj = #{dkjssj}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM jcda_banci
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE jcda_banci SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="Jcdabanci" statementType="STATEMENT">
+		select * FROM jcda_banci  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

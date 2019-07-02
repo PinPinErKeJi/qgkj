@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/jeeplus/jeeplus.iml" filepath="$PROJECT_DIR$/jeeplus/jeeplus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jeeplus-admin/jeeplus-admin.iml" filepath="$PROJECT_DIR$/jeeplus-admin/jeeplus-admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jeeplus-bpm/jeeplus-bpm.iml" filepath="$PROJECT_DIR$/jeeplus-bpm/jeeplus-bpm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jeeplus-calendar/jeeplus-calendar.iml" filepath="$PROJECT_DIR$/jeeplus-calendar/jeeplus-calendar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jeeplus-cmd/jeeplus-cmd.iml" filepath="$PROJECT_DIR$/jeeplus-cmd/jeeplus-cmd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jeeplus-core/jeeplus-core.iml" filepath="$PROJECT_DIR$/jeeplus-core/jeeplus-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jeeplus-mail/jeeplus-mail.iml" filepath="$PROJECT_DIR$/jeeplus-mail/jeeplus-mail.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jeeplus-monitor/jeeplus-monitor.iml" filepath="$PROJECT_DIR$/jeeplus-monitor/jeeplus-monitor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jeeplus-oa/jeeplus-oa.iml" filepath="$PROJECT_DIR$/jeeplus-oa/jeeplus-oa.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jeeplus-quartz/jeeplus-quartz.iml" filepath="$PROJECT_DIR$/jeeplus-quartz/jeeplus-quartz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jeeplus-test/jeeplus-test.iml" filepath="$PROJECT_DIR$/jeeplus-test/jeeplus-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jeeplus-tools/jeeplus-tools.iml" filepath="$PROJECT_DIR$/jeeplus-tools/jeeplus-tools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jeeplus-ureport/jeeplus-ureport.iml" filepath="$PROJECT_DIR$/jeeplus-ureport/jeeplus-ureport.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jeeplus-web/jeeplus-web.iml" filepath="$PROJECT_DIR$/jeeplus-web/jeeplus-web.iml" />
+    </modules>
+  </component>
+</project>

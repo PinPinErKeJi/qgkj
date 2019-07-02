@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.scgl_rkyq_view.mapper.ScglrkyqviewMapper">
+    
+	<sql id="scglrkyqviewColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.org AS "org.id",
+		a.userorg AS "userorg.id",
+		a.code AS "code",
+		a.name AS "name.id",
+		a.indate AS "indate",
+		a.outdate AS "outdate",
+				
+				
+				
+				
+				
+				
+				
+		org.name AS "org.name",
+				
+		userorg.name AS "userorg.name"
+	</sql>
+	
+	<sql id="scglrkyqviewJoins">
+		
+		LEFT JOIN sys_office org ON org.id = a.org
+		LEFT JOIN sys_office userorg ON userorg.id = a.userorg
+		LEFT JOIN sys_user code ON code.id = a.code
+	</sql>
+	
+    
+	<select id="get" resultType="Scglrkyqview" >
+		SELECT 
+			<include refid="scglrkyqviewColumns"/>
+		FROM scgl_rkyq_view a
+		<include refid="scglrkyqviewJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Scglrkyqview" >
+		SELECT 
+			<include refid="scglrkyqviewColumns"/>
+		FROM scgl_rkyq_view a
+		<include refid="scglrkyqviewJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Scglrkyqview" >
+		SELECT 
+			<include refid="scglrkyqviewColumns"/>
+		FROM scgl_rkyq_view a
+		<include refid="scglrkyqviewJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scgl_rkyq_view(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			org,
+			userorg,
+			code,
+			name,
+			indate,
+			outdate
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{org.id},
+			#{userorg.id},
+			#{code},
+			#{name.id},
+			#{indate},
+			#{outdate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scgl_rkyq_view SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			org = #{org.id},
+			userorg = #{userorg.id},
+			code = #{code},
+			name = #{name.id},
+			indate = #{indate},
+			outdate = #{outdate}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM scgl_rkyq_view
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE scgl_rkyq_view SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="Scglrkyqview" statementType="STATEMENT">
+		select * FROM scgl_rkyq_view  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

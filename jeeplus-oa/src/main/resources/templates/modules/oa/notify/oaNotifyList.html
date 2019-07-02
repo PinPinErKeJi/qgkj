@@ -1,0 +1,55 @@
+<%
+layout("/include/_container.html", {title:"通知公告", parent:"我的面板"}){
+%>
+
+<!-- 搜索 -->
+<div id="search-collapse" class="collapse white-box" style="position:relative;margin-bottom: 5px">
+    <a class="jp-ti-close"
+       onclick="$('#search-collapse').fadeToggle()">
+        <i class="icon iconfont icon-guanbi"></i>
+    </a>
+    <form id="searchForm" class="form form-horizontal clearfix">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <label class="label-item single-overflow pull-left" title="标题：">标题：</label>
+            <input name="title" value="${oaNotify.title!}" maxlength="200" class="jp-input"/>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <label class="label-item single-overflow pull-left" title="类型：">类型：</label>
+            <#select path="type" value="${oaNotify.type!}" items="${fn.getDictList('oa_notify_type')}" itemLabel="label"
+            itemValue="value" />
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div style="margin-top:26px">
+                <a id="search" class="jp-btn jp-btn-primary"><i class="fa fa-search"></i> 查询</a>
+                <a id="reset" class="jp-btn"><i class="fa fa-refresh"></i> 重置</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="white-box">
+    <% if(!isSelf){ %>
+    <!-- 工具栏 -->
+    <div id="toolbar">
+        <% if(shiro.hasPermission("oa:oaNotify:add") ){ %>
+        <a id="add" class="jp-btn jp-btn-primary" href="${ctx}/oa/oaNotify/form" title="通知" data-pjax>
+            <i class="glyphicon glyphicon-plus"></i> 新建
+        </a>
+        <% } %>
+        <% if(shiro.hasPermission("oa:oaNotify:edit") ){ %>
+        <button id="edit" class="jp-btn" disabled onclick="edit()">
+            <i class="glyphicon glyphicon-edit"></i> 修改
+        </button>
+        <% } %>
+        <% if(shiro.hasPermission("oa:oaNotify:del") ){ %>
+        <button id="remove" class="jp-btn jp-btn-danger" disabled onclick="deleteAll()">
+            <i class="glyphicon glyphicon-remove"></i> 删除
+        </button>
+        <% } %>
+    </div>
+    <% } %>
+    <!-- 表格 -->
+    <table id="table" data-toolbar="#toolbar"></table>
+</div>
+<% include("oaNotifyList.js"){} %>
+<% } %>

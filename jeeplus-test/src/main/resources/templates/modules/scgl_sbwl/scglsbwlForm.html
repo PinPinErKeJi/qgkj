@@ -1,0 +1,76 @@
+<%
+layout("/include/_dialog.html"){
+%>
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+				        $('#wxsqsj').datetimepicker({
+				 format:'Y-m-d H:i'
+		    });
+		});
+
+		function save() {
+            var isValidate = jp.validateForm('#inputForm');//校验表单
+            if(!isValidate){
+                return false;
+			}else{
+                var index = jp.loading();
+                jp.post("${ctx}/scgl_sbwl/scglsbwl/save",$('#inputForm').serialize(),function(data){
+                    if(data.success){
+                        parent.refresh();
+                        var dialogIndex = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                        parent.layer.close(dialogIndex);
+                        jp.toastr_success(data.msg)
+
+                    }else{
+                        jp.toastr_error(data.msg);
+                    }
+                    jp.close(index);
+                })
+			}
+
+        }
+	</script>
+<div class="white-box">
+		<form id="inputForm"  method="post" class="form-horizontal">
+		<input type="hidden" name="id" value="${scglsbwl.id!}"/>
+		<table class="table table-bordered">
+		   <tbody>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">申请单位：</label></td>
+					<td class="width-35">
+						<#treeselect id="userorg" name="userorg.id" value="${scglsbwl.userorg.id!}" labelName="userorg.name" labelValue="${scglsbwl.userorg.name!}"
+							title="部门" url="/sys/office/treeData?type=2" class="jp-input " allowClear="true" notAllowSelectParent="true"/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">设备名称：</label></td>
+					<td class="width-35">
+						<input name="sbmc" value="${scglsbwl.sbmc!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">设备维修内容：</label></td>
+					<td class="width-35">
+						<input name="sbwxnr" value="${scglsbwl.sbwxnr!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">申请人：</label></td>
+					<td class="width-35">
+						<input name="wxsqr" value="${scglsbwl.wxsqr!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">申请时间：</label></td>
+					<td class="width-35">
+			            <span class="jp-calendar-picker">
+								<input readonly=""  id="wxsqsj" name="wxsqsj"  placeholder="请选择日期" class="jp-calendar-picker-input jp-input   "   value="${fn.formatDate(scglsbwl.wxsqsj!, 'yyyy-MM-dd HH:mm:ss')}">
+								<span class="jp-calendar-picker-icon"></span>
+						</span>
+
+				</td>
+					<td class="width-15 active"></td>
+		   			<td class="width-35" ></td>
+		  		</tr>
+		 	</tbody>
+		</table>
+		</form>
+</div>
+<% } %>

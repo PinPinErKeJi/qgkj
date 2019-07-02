@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+encoding//src/main/java=UTF-8
+encoding//src/main/resources=UTF-8
+encoding//src/main/resources/templates/include/_common_right.html=UTF-8
+encoding//src/main/resources/templates/include/_common_top.html=UTF-8
+encoding//src/main/resources/templates/include/layIM-init.html=UTF-8
+encoding//src/main/resources/templates/include/systemInfoSocket-init.html=UTF-8
+encoding//src/main/resources/templates/modules/sys/login/sysIndex.html=UTF-8
+encoding/<project>=UTF-8

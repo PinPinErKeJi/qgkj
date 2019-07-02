@@ -1,0 +1,49 @@
+<%
+layout("/include/_container.html", {title:"待办任务", parent:"流程管理"}){
+%>
+
+<!-- 搜索 -->
+<div id="search-collapse" class="collapse white-box" style="position:relative;margin-bottom: 5px">
+    <a class="jp-ti-close" onclick="$('#search-collapse').fadeToggle()">
+        <i class="icon iconfont icon-guanbi"></i>
+    </a>
+    <form id="searchForm" class="form form-horizontal clearfix">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="form-group">
+                <label class="label-item single-overflow pull-left" title="创建时间：">&nbsp;创建时间：</label>
+                <div class="col-xs-12" style="margin-left: -25px;">
+                    <div class="col-xs-12 col-sm-5">
+							   <span class="jp-calendar-picker">
+										<input readonly="" id="beginDate" name="beginDate" placeholder="请选择日期"
+                                               class="jp-calendar-picker-input jp-input">
+										<span class="jp-calendar-picker-icon"></span>
+								</span>
+                    </div>
+                    <div class="col-xs-12 col-sm-1">
+                        ~
+                    </div>
+                    <div class="col-xs-12 col-sm-5">
+								<span class="jp-calendar-picker">
+										<input readonly="" id="endDate" name="endDate" placeholder="请选择日期"
+                                               class="jp-calendar-picker-input jp-input">
+										<span class="jp-calendar-picker-icon"></span>
+								</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div style="margin-top:26px">
+                <a id="search" class="jp-btn jp-btn-primary"><i class="fa fa-search"></i> 查询</a>
+                <a id="reset" class="jp-btn"><i class="fa fa-refresh"></i> 重置</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 表格 -->
+<div class="white-box">
+    <table id="actTable"></table>
+</div>
+<% include("taskTodoList.js"){} %>
+<% } %>

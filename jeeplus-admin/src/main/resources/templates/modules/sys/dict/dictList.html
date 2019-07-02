@@ -1,0 +1,83 @@
+<%
+layout("/include/_container.html", {title:"字典管理", parent:"系统设置"}){
+%>
+	<div class="row">
+		<div id="left" class="col-sm-12">
+				<!-- 搜索 -->
+				<div id="search-collapse" class="white-box collapse"  style="position:relative; margin-bottom: 5px">
+					<a class="jp-ti-close" onclick="$('#search-collapse').fadeToggle()">
+						<i class="icon iconfont icon-guanbi"></i>
+					</a>
+					<form id="searchForm"  class="form form-horizontal clearfix" >
+						    <div class="col-xs-12 col-sm-6 col-md-4">
+						    	<label class="label-item single-overflow pull-left" title="类型：">类型：</label>
+						    	<input id="type" name="type" class="jp-input m-b"/>
+						    </div>
+						    <div class="col-xs-12 col-sm-6 col-md-4">
+						    	<label class="label-item single-overflow pull-left" title="描述">描述：</label>
+						   		<input id="description" name="description" class="jp-input m-b"/>
+						    </div>
+						    <div class="col-xs-12 col-sm-6 col-md-4">
+								 <div style="margin-top:26px">
+								  <a  id="search" class="jp-btn jp-btn-primary"><i class="fa fa-search"></i> 查询</a>
+								  <a  id="reset" class="jp-btn" ><i class="fa fa-refresh"></i> 重置</a>
+								</div>
+						    </div>
+						</form>
+				</div>
+
+				<div class="white-box">
+				<!-- 工具栏 -->
+				<div id="toolbar">
+					<% if(shiro.hasPermission("sys:dict:add") ){ %>
+						<button id="add" class="jp-btn jp-btn-primary"  onclick="add()"><i class="fa fa-plus"></i> 新建</button>
+					<% } %>
+					<% if(shiro.hasPermission("sys:dict:edit")) { %>
+						<button id="edit" class="jp-btn" disabled onclick="edit()">
+							<i class="fa fa-edit"></i> 修改
+						</button>
+					<% } %>
+					<% if(shiro.hasPermission("sys:dict:del")) { %>
+						<button id="remove" class="jp-btn jp-btn-danger" disabled onclick="del()">
+							<i class="fa fa-remove"></i> 删除
+						</button>
+					<% } %>
+				</div><!-- 工具栏结束 -->
+
+				<!-- 表格 -->
+				<table id="table"
+					   class="table-bordered"
+					   data-toolbar="#toolbar"
+					   data-id-field="id">
+				</table>
+				</div>
+
+		    </div>
+
+		<div  id="right" class="col-sm-6" style="padding-left:0px;display:none">
+			<div class="panel panel-default ">
+				<div class="panel-heading">
+					<a class="jp-ti-close" style="right: 20px !important;" onclick="hideDictValuePanel()">
+						<i class="icon iconfont icon-guanbi"></i>
+					</a>
+					<h3 class="panel-title"><label>键值列表，所属类型: </label><font id="dictTypeLabel"></font><input type="hidden" id="dictTypeId"/></h3>
+				</div>
+				<div class="panel-body">
+				 <div id="dictValueToolbar">
+					<button id="dictValueButton"  class="jp-btn jp-btn-primary jp-btn-dashed" title="添加键值"><i class="fa fa-plus-circle"></i> 添加键值</button>
+				</div>
+				 <!-- 表格 -->
+			    <table id="dictValueTable"
+					   class="table-bordered"
+			           data-toolbar="#dictValueToolbar"
+			           data-id-field="id">
+			    </table>
+			   
+			   </div>
+			</div>
+			
+		</div>
+	</div>
+
+<% include("dictList.js"){} %>
+<% } %>

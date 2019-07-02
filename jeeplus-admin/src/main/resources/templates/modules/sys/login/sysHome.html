@@ -1,0 +1,103 @@
+<%
+layout("/include/_container.html", {title:"首页", parent:"工作台"}){
+%>
+<link href="${ctxStatic}/common/css/index.css" rel="stylesheet">
+<div id="index_banner">
+	<div class="main_banner">
+		<div class="main_banner--circles" flex spaceevenly>
+			<div class="main_banner--circle" flex center>
+				<svg width="200" height="200">
+					<circle cx="100" cy="100" r="90" stroke-width="10" stroke="#004082" fill="none"></circle>
+					<circle cx="100" cy="100" r="90" stroke-width="10" stroke="#0E8BFF" fill="none" class="rotatecircle" transform="matrix(0,-1,1,0,0,200)" stroke-dasharray="30 1000"></circle>
+				</svg>
+				<div class="circle-inner" flex-column center>
+					<span class="num"><span style="font-size: 40px;color: #fff;">5</span>/200</span>
+					<span class="text">主题</span>
+				</div>
+			</div>
+			<div class="main_banner--circle" flex center>
+				<svg width="200" height="200">
+					<circle cx="100" cy="100" r="90" stroke-width="10" stroke="#004082" fill="none"></circle>
+					<circle cx="100" cy="100" r="90" stroke-width="10" stroke="#14C46C" fill="none" class="rotatecircle" transform="matrix(0,-1,1,0,0,200)" stroke-dasharray="67.92 1000"></circle>
+				</svg>
+				<div class="circle-inner" flex-column center>
+					<span class="num"><span style="font-size: 40px;color: #fff;">60</span>/500</span>
+					<span class="text">基础</span>
+				</div>
+			</div>
+			<div class="main_banner--circle" flex center>
+				<svg width="200" height="200">
+					<circle cx="100" cy="100" r="90" stroke-width="10" stroke="#004082" fill="none"></circle>
+					<circle cx="100" cy="100" r="90" stroke-width="10" stroke="#FF9901" fill="none" class="rotatecircle" transform="matrix(0,-1,1,0,0,200)" stroke-dasharray="100 1000"></circle>
+				</svg>
+				<div class="circle-inner" flex-column center>
+					<span class="num"><span style="font-size: 40px;color: #fff;">20</span>/300</span>
+					<span class="text">部门</span>
+				</div>
+			</div>
+		</div>
+		<div class="main_banner--cards" flex spaceevenly>
+			<div class="main_banner--card" flex-column center>
+				<span class="num">5</span>
+				<span class="text">已编制信息资源</span>
+				<div class="opacitybg"></div>
+			</div>
+			<div class="main_banner--card" flex-column center>
+				<span class="num">10</span>
+				<span class="text">已编制信息项</span>
+				<div class="opacitybg"></div>
+			</div>
+			<div class="main_banner--card" flex-column center>
+				<span class="num">4</span>
+				<span class="text">共享制信息资源</span>
+				<div class="opacitybg"></div>
+			</div>
+			<div class="main_banner--card" flex-column center>
+				<span class="num">3</span>
+				<span class="text">已开放信息资源</span>
+				<div class="opacitybg"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="news_container" flex spaceevenly>
+
+
+<#echarts id="test" url="${ctx}/echarts/link?id=f145b4ad25124459a684dde38133f626"/>
+
+	<div class="new_box progress_box">
+		<div class="new_box--header">
+			<span class="title" pull-left>我的流程</span>
+			<span class="more" pull-right>更多>></span>
+		</div>
+		<div class="new_box--blocks" flex flex-wrap>
+			<!--<div class="new_box&#45;&#45;block" flex-column center>-->
+				<!--<img src="${ctxStatic}/common/images/progress_leave.png" alt="">-->
+				<!--<span>请假</span>-->
+			<!--</div>-->
+			<div class="new_box--block" flex-column center>
+				<a href="${ctx}/act/task/form?procDefId=resource:14:62541">
+					<img src="${ctxStatic}/common/images/progress_source.png" alt="">
+					<span>资源审批</span>
+				</a>
+			</div>
+			<div class="new_box--block" flex-column center>
+				<a href="${ctx}/act/task/form?procDefId=shareDataActivity:3:60004">
+					<img src="${ctxStatic}/common/images/progress_data.png" alt="">
+					<span>数据共享</span>
+				</a>
+			</div>
+			<!--<div class="new_box&#45;&#45;block" flex-column center>-->
+				<!--<img src="${ctxStatic}/common/images/progress_test.png" alt="">-->
+				<!--<span>资源审批测试</span>-->
+			<!--</div>-->
+		</div>
+	</div>
+</div>
+<script>
+    $(document).ready(function(){
+        // 改变圆环比例
+        $('.rotatecircle').attr('stroke-dasharray', '180 1000');
+    });
+</script>
+<% } %>

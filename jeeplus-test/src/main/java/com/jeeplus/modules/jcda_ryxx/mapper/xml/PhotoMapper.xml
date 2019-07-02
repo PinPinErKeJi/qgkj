@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.jcda_ryxx.mapper.PhotoMapper">
+	<sql id="simpleSql">
+		a.id AS "id",
+		a.person_id AS "person.id",
+		a.path AS "path",
+		a.face_id AS "faceId",
+		a.type AS "type",
+		a.feature AS "feature",
+		a.feature_key AS "featureKey"
+	</sql>
+	
+	<select id="get" resultType="Photo">
+		SELECT 
+			<include refid="simpleSql"/>
+		FROM jcda_registerphoto a
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findByPerson" resultType="Photo">
+		SELECT 
+			<include refid="simpleSql"/>
+		FROM jcda_registerphoto a
+		WHERE a.person_id = #{personId}
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jcda_registerphoto(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			person_id,
+			path,
+			face_id,
+			type,
+			feature,
+			feature_key
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{person.id},
+			#{path},
+			#{faceId},
+			#{type},
+			#{feature},
+			#{featureKey}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jcda_registerphoto SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			person_id = #{person.id},
+			path = #{path},
+			face_id = #{faceId},
+			type = #{type},
+			feature = #{feature},
+			feature_key = #{featureKey}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM jcda_registerphoto
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE person_id = #{person.id}
+			</otherwise>
+		</choose>
+	</update>
+</mapper>

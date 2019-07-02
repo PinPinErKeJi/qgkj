@@ -1,0 +1,88 @@
+<%
+layout("/include/_dialog.html"){
+%>
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+				        $('#beginDate').datetimepicker({
+				 format:'Y-m-d H:i'
+		    });
+	        $('#endDate').datetimepicker({
+				 format:'Y-m-d H:i'
+		    });
+		});
+
+		function save() {
+            var isValidate = jp.validateForm('#inputForm');//校验表单
+            if(!isValidate){
+                return false;
+			}else{
+                var index = jp.loading();
+                jp.post("${ctx}/test/one/dialog/leaveForm1/save",$('#inputForm').serialize(),function(data){
+                    if(data.success){
+                        parent.refresh();
+                        var dialogIndex = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                        parent.layer.close(dialogIndex);
+                        jp.toastr_success(data.msg)
+
+                    }else{
+                        jp.toastr_error(data.msg);
+                    }
+                    jp.close(index);
+                })
+			}
+
+        }
+	</script>
+<div class="white-box">
+		<form id="inputForm"  method="post" class="form-horizontal">
+		<input type="hidden" name="id" value="${leaveForm1.id!}"/>
+		<table class="table table-bordered">
+		   <tbody>
+				<tr>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>归属部门：</label></td>
+					<td class="width-35">
+						<#treeselect id="office" name="office.id" value="${leaveForm1.office.id!}" labelName="office.name" labelValue="${leaveForm1.office.name!}"
+							title="部门" url="/sys/office/treeData?type=2" class="jp-input required" allowClear="true" notAllowSelectParent="true"/>
+				</td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>员工：</label></td>
+					<td class="width-35">
+						<#userselect id="tuser" name="tuser.id" value="${leaveForm1.tuser.id!}" labelName="tuser.name" labelValue="${leaveForm1.tuser.name!}"
+							    class="jp-input required"/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">归属区域：</label></td>
+					<td class="width-35">
+				<div class=" input-group" style=" width: 100%;">
+					  <input name="area"  value="${leaveForm1.area!}"  class="" data-toggle="city-picker" style="height: 34px;"/>
+				</div>
+				</td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>请假开始日期：</label></td>
+					<td class="width-35">
+			            <span class="jp-calendar-picker">
+								<input readonly=""  id="beginDate" name="beginDate"  placeholder="请选择日期" class="jp-calendar-picker-input jp-input   required"   value="${fn.formatDate(leaveForm1.beginDate!, 'yyyy-MM-dd HH:mm:ss')}">
+								<span class="jp-calendar-picker-icon"></span>
+						</span>
+
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>请假结束日期：</label></td>
+					<td class="width-35">
+			            <span class="jp-calendar-picker">
+								<input readonly=""  id="endDate" name="endDate"  placeholder="请选择日期" class="jp-calendar-picker-input jp-input   required"   value="${fn.formatDate(leaveForm1.endDate!, 'yyyy-MM-dd HH:mm:ss')}">
+								<span class="jp-calendar-picker-icon"></span>
+						</span>
+
+				</td>
+					<td class="width-15 active"><label class="pull-right">备注信息：</label></td>
+					<td class="width-35">
+						<textarea name="remarks" rows="4"    class="jp-input ">${leaveForm1.remarks!}</textarea>
+				</td>
+				</tr>
+		 	</tbody>
+		</table>
+		</form>
+</div>
+<% } %>

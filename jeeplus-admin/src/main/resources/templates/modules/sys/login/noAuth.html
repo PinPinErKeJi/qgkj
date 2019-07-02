@@ -1,0 +1,42 @@
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="shortcut icon" href="${ctxStatic}/plugins/images/favicon.ico">
+	<title>${fn.getProductName()}</title>
+	<!-- Bootstrap Core CSS -->
+	<link href="${ctxStatic}/commons/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- animation CSS -->
+	<link href="${ctxStatic}/commons/css/animate.css" rel="stylesheet">
+
+	<!-- Custom CSS -->
+	<link href="${ctxStatic}/commons/css/style.css" rel="stylesheet">
+	<!-- color CSS -->
+	<link href="${ctxStatic}/commons/css/colors/${fn.getCookie(request,'theme') == null?'blue-dark':fn.getCookie(request,'theme')}.css" id="theme"  rel="stylesheet">
+
+</head>
+<body>
+<!-- Preloader -->
+
+<section id="wrapper" class="error-page">
+	<div class="error-box">
+		<div class="error-body text-center">
+			<h1 class="text-info">403</h1>
+			<h3 class="text-uppercase">禁止访问</h3>
+			<p class="text-muted m-t-30 m-b-30 text-uppercase">${fn.getUser().name}，您的账号没有被授予任何角色和权限，因此无法访问系统，请联系管理员开通!</p>
+			<a href="${ctx}/logout" class="btn btn-info btn-rounded waves-effect waves-light m-b-40">安全退出</a> </div>
+		<footer class="footer text-center">2018 © jeeplus.</footer>
+	</div>
+</section>
+<!-- jQuery -->
+<script src="${ctxStatic}/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="${ctxStatic}/commons/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>

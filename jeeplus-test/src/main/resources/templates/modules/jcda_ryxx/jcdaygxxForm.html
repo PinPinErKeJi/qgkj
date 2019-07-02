@@ -1,0 +1,175 @@
+<%
+layout("/include/_dialog.html"){
+%>
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+
+				        $('#enterdate').datetimepicker({
+				 format:'Y-m-d'
+		    });
+	        $('#birthdate').datetimepicker({
+				 format:'Y-m-d'
+		    });
+		});
+
+		function save() {
+            var isValidate = jp.validateForm('#inputForm');//校验表单
+            if(!isValidate){
+                return false;
+			}else{
+                var index = jp.loading();
+                jp.post("${ctx}/jcda_ryxx/jcdaygxx/save",$('#inputForm').serialize(),function(data){
+                    if(data.success){
+                        parent.refresh();
+                        var dialogIndex = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                        parent.layer.close(dialogIndex);
+                        jp.toastr_success(data.msg)
+
+                    }else{
+                        jp.toastr_error(data.msg);
+                    }
+                    jp.close(index);
+                })
+			}
+        }
+	</script>
+<div class="white-box">
+		<form id="inputForm"  method="post" class="form-horizontal">
+		<input type="hidden" name="id" value="${jcdaygxx.id!}"/>
+		<table class="table table-bordered">
+		   <tbody>
+				<tr>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>组织架构：</label></td>
+					<td class="width-35">
+						<#treeselect id="jg" name="jg.id" value="${jcdaygxx.jg.id!}" labelName="jg.name" labelValue="${jcdaygxx.jg.name!}"
+							title="组织架构" url="/jcda_ryxx/syjg/treeData" extId="${jcdaygxx.id}" class="jp-input required" allowClear="true"/>
+					</td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>员工编号：</label></td>
+					<td class="width-35">
+						<input name="code" value="${jcdaygxx.code!}"    class="jp-input required"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>员工姓名：</label></td>
+					<td class="width-35">
+						<input name="name" value="${jcdaygxx.name!}"    class="jp-input required"/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">登记编号：</label></td>
+					<td class="width-35">
+						<input name="regcode" value="${jcdaygxx.regcode!}"    class="jp-input "/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">卡片编号：</label></td>
+					<td class="width-35">
+						<input name="cardno" value="${jcdaygxx.cardno!}"    class="jp-input "/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">入职日期：</label></td>
+					<td class="width-35">
+			            <span class="jp-calendar-picker">
+								<input readonly="readonly"  id="enterdate" name="enterdate"  placeholder="请选择日期" class="jp-calendar-picker-input jp-input   "   value="${fn.formatDate(jcdaygxx.enterdate!, 'yyyy-MM-dd')}">
+								<span class="jp-calendar-picker-icon"></span>
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">性别：</label></td>
+					<td class="width-35">
+						<#select path="sex" value="${jcdaygxx.sex!}" items="${fn.getDictList('sex')}" itemLabel="label" itemValue="value" class=""/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">民族：</label></td>
+					<td class="width-35">
+						<#gridselect url="${ctx}/jcda_national/jcdanational/data" id="national" name="national.id" value="${jcdaygxx.national.id!}" labelName="national.name" labelValue="${jcdaygxx.national.name!}"
+							 title="选择民族" class="jp-input " fieldLabels="名称" fieldKeys="name" searchLabels="名称" searchKeys="name" />
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">证件编号：</label></td>
+					<td class="width-35">
+						<input name="certificate" value="${jcdaygxx.certificate!}"    class="jp-input "/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">电话号码：</label></td>
+					<td class="width-35">
+						<input name="telephone" value="${jcdaygxx.telephone!}"    class="jp-input "/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>员工状态：</label></td>
+					<td class="width-35">
+						<#select path="personstate" value="${jcdaygxx.personstate!}" items="${fn.getDictList('personstate')}" itemLabel="label" itemValue="value" class="required"/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">出生日期：</label></td>
+					<td class="width-35">
+			            <span class="jp-calendar-picker">
+								<input readonly=""  id="birthdate" name="birthdate"  placeholder="请选择日期" class="jp-calendar-picker-input jp-input   "   value="${fn.formatDate(jcdaygxx.birthdate!, 'yyyy-MM-dd')}">
+								<span class="jp-calendar-picker-icon"></span>
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">职务：</label></td>
+					<td class="width-35">
+						<#select path="position" value="${jcdaygxx.position!}" items="${fn.getDictList('position')}" itemLabel="label" itemValue="value" class=""/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">工种：</label></td>
+					<td class="width-35">
+						<#select path="worktpye" value="${jcdaygxx.worktpye!}" items="${fn.getDictList('worktpye')}" itemLabel="label" itemValue="value" class=""/>
+					</td>
+				</tr>
+				<!-- <tr>
+				<td class="width-15 active"><label class="pull-right"><font color="red">*</font>个人注册信息：</label></td>
+					<td class="width-35">
+						<#select path="regpersonal" value="${jcdaygxx.regpersonal!}" items="${fn.getDictList('regpersonal')}" itemLabel="label" itemValue="value" class="required"/>
+					</td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>照片：</label></td>
+					<td class="width-35">
+			            <#fileUpload id="photo" name="photo"  value="${jcdaygxx.photo}" type="file" class="jp-input required" uploadPath="/jcda_ryxx/jcdaygxx"/>
+					</td> 
+				</tr> -->
+				<tr>
+					<td class="width-15 active"><label class="pull-right">地址：</label></td>
+					<td class="width-35">
+						<input name="address" value="${jcdaygxx.address!}"    class="jp-input "/>
+					</td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>班次：</label></td>
+					<td class="width-35">
+						<#select path="shift" value="${jcdaygxx.shift!}" items="${fn.getDictList('banci')}" itemLabel="label" itemValue="value" class="jp-input required"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">周末：</label></td>
+					<td class="width-35">
+						<#select path="weekday" value="${jcdaygxx.weekday!}" items="${fn.getDictList('weekday')}" itemLabel="label" itemValue="value" class=""/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">考勤密码：</label></td>
+					<td class="width-35">
+						<input name="attpassword" value="${jcdaygxx.attpassword!}"    class="jp-input "/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">考勤密码确认：</label></td>
+					<td class="width-35">
+						<input name="attpasswordconf" value="${jcdaygxx.attpasswordconf!}"    class="jp-input "/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">注册类型：</label></td>
+					<td class="width-35">
+						<#select path="regtype" value="${jcdaygxx.regtype!}" items="${fn.getDictList('regtype')}" itemLabel="label" itemValue="value" class=""/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">备注：</label></td>
+					<td class="width-35">
+						<input name="remark" value="${jcdaygxx.remark!}"    class="jp-input "/>
+					</td>
+						<td class="width-15 active"><label class="pull-right"><font color="red">*</font>设备名称：</label></td>
+					<td class="width-35">
+						<#gridselect url="${ctx}/jcda_sbgl_view/jcdaSbglView/data" id="sb" name="sb.id" value="${jcdaygxx.sb.id!}" labelName="sb.name" labelValue="${jcdaygxx.sb.name!}"
+							 title="选择设备名称" class="jp-input required" fieldLabels="名称" fieldKeys="name" searchLabels="名称" searchKeys="name"/>
+					</td>
+		  		</tr>
+		 	</tbody>
+		</table>
+		</form>
+</div>
+<% } %>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.scsb_ryxx.mapper.ScsbsubMapper">
+    
+	<sql id="scsbsubColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.sb_id AS "sbid.id",
+		a.sblocation AS "sbid.id",
+		a.zdy1 AS "zdy1",
+		a.zdy2 AS "zdy2",
+		a.zdy3 AS "zdy3",
+		a.zdy4 AS "zdy4",
+		a.zdy5 AS "zdy5",
+		a.zdy6 AS "zdy6",
+		a.zdy7 AS "zdy7",
+		a.zdy8 AS "zdy8",
+		a.zdy9 AS "zdy9",
+		a.zdy10 AS "zdy10",
+				
+				
+				
+				
+				
+				
+				
+				
+		sbid.location AS "sbid.location"
+	</sql>
+	
+	<sql id="scsbsubJoins">
+		
+			LEFT JOIN scsb_main b ON b.id = a.sb_id
+		LEFT JOIN sc_sbgl sbid ON sbid.id = a.sblocation
+	</sql>
+	
+    
+	<select id="get" resultType="Scsbsub" >
+		SELECT 
+			<include refid="scsbsubColumns"/>
+		FROM scsb_sub a
+		<include refid="scsbsubJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Scsbsub" >
+		SELECT 
+			<include refid="scsbsubColumns"/>
+		FROM scsb_sub a
+		<include refid="scsbsubJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="sbid != null and sbid.id != null and sbid.id != ''">
+				AND a.sb_id = #{sbid.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Scsbsub" >
+		SELECT 
+			<include refid="scsbsubColumns"/>
+		FROM scsb_sub a
+		<include refid="scsbsubJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scsb_sub(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			sb_id,
+			sblocation,
+			zdy1,
+			zdy2,
+			zdy3,
+			zdy4,
+			zdy5,
+			zdy6,
+			zdy7,
+			zdy8,
+			zdy9,
+			zdy10
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{sbid.id},
+			#{sbid.id},
+			#{zdy1},
+			#{zdy2},
+			#{zdy3},
+			#{zdy4},
+			#{zdy5},
+			#{zdy6},
+			#{zdy7},
+			#{zdy8},
+			#{zdy9},
+			#{zdy10}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scsb_sub SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			sb_id = #{sbid.id},
+			sblocation = #{sbid.id},
+			zdy1 = #{zdy1},
+			zdy2 = #{zdy2},
+			zdy3 = #{zdy3},
+			zdy4 = #{zdy4},
+			zdy5 = #{zdy5},
+			zdy6 = #{zdy6},
+			zdy7 = #{zdy7},
+			zdy8 = #{zdy8},
+			zdy9 = #{zdy9},
+			zdy10 = #{zdy10}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM scsb_sub
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE sb_id = #{sbid.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE scsb_sub SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE sb_id = #{sbid.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="Scsbsub" statementType="STATEMENT">
+		select * FROM scsb_sub  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

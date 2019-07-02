@@ -1,0 +1,139 @@
+<%
+layout("/include/_dialog.html"){
+%>
+<link rel="stylesheet" href="${ctxStatic}/layui/css/layui.css" />
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+		});
+
+		function save() {
+            var isValidate = jp.validateForm('#inputForm');//校验表单
+            if(!isValidate){
+                return false;
+			}else{
+                var index = jp.loading();
+                jp.post("${ctx}/kqgl_rykqb/kqglrykqb/save",$('#inputForm').serialize(),function(data){
+                    if(data.success){
+                        parent.refresh();
+                        var dialogIndex = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                        parent.layer.close(dialogIndex);
+                        jp.toastr_success(data.msg)
+
+                    }else{
+                        jp.toastr_error(data.msg);
+                    }
+                    jp.close(index);
+                })
+			}
+
+        }
+	</script>
+<div class="white-box">
+		<form id="inputForm"  method="post" class="form-horizontal">
+		<input type="hidden" name="id" value="${kqglrykqb.id!}"/>
+		<table class="table table-bordered">
+		   <tbody>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">组织架构：</label></td>
+					<td class="width-85">
+						<#treeselect id="jg" name="jg.id" value="${kqglrykqb.jg.id!}" labelName="jg.name" labelValue="${kqglrykqb.jg.name!}"
+							title="组织架构" url="/jcda_ryxx/syjg/treeData" class="jp-input " allowClear="true" notAllowSelectParent="true"/>
+				</td>
+					<!-- <td class="width-15 active"><label class="pull-right">部门：</label></td>
+					<td class="width-35">
+						<#treeselect id="bm" name="bm.id" value="${kqglrykqb.bm.id!}" labelName="bm.name" labelValue="${kqglrykqb.bm.name!}"
+							title="部门" url="/sys/office/treeData?type=2" class="jp-input " allowClear="true" notAllowSelectParent="true"/>
+				</td> -->
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">人员编码：</label></td>
+					<td class="width-35">
+						<input name="code" value="${kqglrykqb.code!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">姓名：</label></td>
+					<td class="width-35">
+						<#gridselect url="${ctx}/jcda_ygxx_view/jcdaYgxxView/data" id="xm" name="xm.id" value="${kqglrykqb.xm.id!}" labelName="xm.name" labelValue="${kqglrykqb.xm.name!}"
+							 title="选择姓名" class="jp-input " fieldLabels="编号|卡号|姓名" fieldKeys="code|cardno|name" searchLabels="编号|卡号|姓名" searchKeys="code|cardno|name" />
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">设备名称：</label></td>
+					<td class="width-35">
+						<input name="sbmc" value="${kqglrykqb.sbmc!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">设备序列号：</label></td>
+					<td class="width-35">
+						<input name="sbxlh" value="${kqglrykqb.sbxlh!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">考勤时间：</label></td>
+					<td class="width-35">
+			            <span class="jp-calendar-picker">
+								<input readonly="readonly"  id="kqsj" name="kqsj"  placeholder="请选择日期" class="jp-calendar-picker-input jp-input   "   value="${kqglrykqb.kqsj!}">
+								<span class="jp-calendar-picker-icon"></span>
+						</span>
+
+				</td>
+					<td class="width-15 active"><label class="pull-right">考勤年月日：</label></td>
+					<td class="width-35">
+			            <span class="jp-calendar-picker">
+								<input readonly="readonly"  id="kqnyr" name="kqnyr"  placeholder="请选择日期" class="jp-calendar-picker-input jp-input   "   value="${kqglrykqb.kqnyr!}">
+								<span class="jp-calendar-picker-icon"></span>
+						</span>
+
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">星期：</label></td>
+					<td class="width-35">
+						<input name="xq" value="${kqglrykqb.xq!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">照片：</label></td>
+					<td class="width-35">
+						<input name="zp" readonly="readonly" value="${kqglrykqb.zp!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+				<td class="width-15 active"><label class="pull-right">班别：</label></td>
+					<td class="width-35">
+						<#select path="bb" value="${kqglrykqb.bb!}" items="${fn.getDictList('banci')}" itemLabel="label" itemValue="value" class=""/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">状态：</label></td>
+					<td class="width-35">
+						<#select path="zt" value="${kqglrykqb.zt!}" items="${fn.getDictList('kqzt')}" itemLabel="label" itemValue="value" class=""/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">时长：</label></td>
+					<td class="width-35">
+						<input name="sc" value="${kqglrykqb.sc!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">天数：</label></td>
+					<td class="width-35">
+						<input name="ts" value="${kqglrykqb.ts!}"    class="jp-input "/>
+				</td>
+				</tr>
+		 	</tbody>
+		</table>
+		</form>
+</div>
+<script src="${ctxStatic}/layui/layui.js"></script>
+<script type="text/javascript">
+layui.use('laydate', function(){
+	var laydate = layui.laydate;
+	//时间选择器
+	laydate.render({
+	  elem: '#kqnyr'
+	  ,type: 'date'
+	  ,theme: 'molv'
+	});
+	laydate.render({
+	  elem: '#kqsj'
+	  ,type: 'time'
+	  ,theme: 'molv'
+	});
+});
+</script>
+<% } %>

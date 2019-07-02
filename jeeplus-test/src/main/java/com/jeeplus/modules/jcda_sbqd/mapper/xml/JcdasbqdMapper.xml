@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.jcda_sbqd.mapper.JcdasbqdMapper">
+    
+	<sql id="jcdasbqdColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.sbmc AS "sbmc",
+		a.sbid AS "sbid",
+		a.sbxlh AS "sbxlh",
+		a.sbip AS "sbip",
+		a.sbqy AS "sbqy.id",
+		a.sbdiz AS "sbdiz",
+		a.sbzt AS "sbzt",
+		a.zdy1 AS "zdy1",
+		a.zdy2 AS "zdy2",
+		a.zdy3 AS "zdy3",
+		a.zdy4 AS "zdy4",
+		a.zdy5 AS "zdy5",
+		a.zdy6 AS "zdy6",
+		a.zdy7 AS "zdy7",
+		a.zdy8 AS "zdy8",
+		a.zdy9 AS "zdy9",
+		a.zdy10 AS "zdy10"
+	</sql>
+	
+	<sql id="jcdasbqdJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="Jcdasbqd" >
+		SELECT 
+			<include refid="jcdasbqdColumns"/>
+		FROM jcda_sbqd a
+		<include refid="jcdasbqdJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Jcdasbqd" >
+		SELECT 
+			<include refid="jcdasbqdColumns"/>
+		FROM jcda_sbqd a
+		<include refid="jcdasbqdJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="sbmc != null and sbmc != ''">
+				AND a.sbmc LIKE 
+					<if test="_databaseId == 'oracle'">'%'||#{sbmc}||'%'</if>
+					<if test="_databaseId == 'mssql'">'%'+#{sbmc}+'%'</if>
+					<if test="_databaseId == 'mysql'">concat('%',#{sbmc},'%')</if>
+			</if>
+			<if test="sbxlh != null and sbxlh != ''">
+				AND a.sbxlh = #{sbxlh}
+			</if>
+			<if test="sbip != null and sbip != ''">
+				AND a.sbip = #{sbip}
+			</if>
+			<if test="sbqy != null and sbqy.id != null and sbqy.id != ''">
+				AND a.sbqy = #{sbqy.id}
+			</if>
+			<if test="sbdiz != null and sbdiz != ''">
+				AND a.sbdiz LIKE 
+					<if test="_databaseId == 'oracle'">'%'||#{sbdiz}||'%'</if>
+					<if test="_databaseId == 'mssql'">'%'+#{sbdiz}+'%'</if>
+					<if test="_databaseId == 'mysql'">concat('%',#{sbdiz},'%')</if>
+			</if>
+			<if test="sbzt != null and sbzt != ''">
+				AND a.sbzt = #{sbzt}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Jcdasbqd" >
+		SELECT 
+			<include refid="jcdasbqdColumns"/>
+		FROM jcda_sbqd a
+		<include refid="jcdasbqdJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jcda_sbqd(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			sbmc,
+			sbid,
+			sbxlh,
+			sbip,
+			sbqy,
+			sbdiz,
+			sbzt,
+			zdy1,
+			zdy2,
+			zdy3,
+			zdy4,
+			zdy5,
+			zdy6,
+			zdy7,
+			zdy8,
+			zdy9,
+			zdy10
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{sbmc},
+			#{sbid},
+			#{sbxlh},
+			#{sbip},
+			#{sbqy.id},
+			#{sbdiz},
+			#{sbzt},
+			#{zdy1},
+			#{zdy2},
+			#{zdy3},
+			#{zdy4},
+			#{zdy5},
+			#{zdy6},
+			#{zdy7},
+			#{zdy8},
+			#{zdy9},
+			#{zdy10}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jcda_sbqd SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			sbmc = #{sbmc},
+			sbid = #{sbid},
+			sbxlh = #{sbxlh},
+			sbip = #{sbip},
+			sbqy = #{sbqy.id},
+			sbdiz = #{sbdiz},
+			sbzt = #{sbzt},
+			zdy1 = #{zdy1},
+			zdy2 = #{zdy2},
+			zdy3 = #{zdy3},
+			zdy4 = #{zdy4},
+			zdy5 = #{zdy5},
+			zdy6 = #{zdy6},
+			zdy7 = #{zdy7},
+			zdy8 = #{zdy8},
+			zdy9 = #{zdy9},
+			zdy10 = #{zdy10}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM jcda_sbqd
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE jcda_sbqd SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="Jcdasbqd" statementType="STATEMENT">
+		select * FROM jcda_sbqd  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

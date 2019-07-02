@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.jcda_ygda.mapper.JcdarydaMapper">
+    
+	<sql id="jcdarydaColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.jg_id AS "jgId.id",
+		a.code AS "code",
+		a.name AS "name",
+		a.regcode AS "regcode",
+		a.cardno AS "cardno",
+		a.enterdate AS "enterdate",
+		a.sex AS "sex",
+		a.national AS "national",
+		a.certificate AS "certificate",
+		a.telephone AS "telephone",
+		a.personstate AS "personstate",
+		a.birthdate AS "birthdate",
+		a.position AS "position",
+		a.worktpye AS "worktpye",
+		a.photo AS "photo",
+		a.remark AS "remark",
+		a.address AS "address",
+		a.shift AS "shift",
+		a.weekday AS "weekday",
+		a.attpassword AS "attpassword",
+		a.attpasswordconf AS "attpasswordconf",
+		a.regtype AS "regtype",
+		a.regpersonal AS "regpersonal",
+		a.zdy1 AS "sb.id",
+		a.zdy2 AS "qy.id",
+		a.zdy3 AS "zdy3",
+		a.zdy4 AS "zdy4",
+		a.zdy5 AS "zdy5",
+		a.zdy6 AS "zdy6",
+		a.zdy7 AS "zdy7",
+		a.zdy8 AS "zdy8",
+		a.zdy9 AS "zdy9",
+		a.zdy10 AS "zdy10",
+		jgId.name AS "jgId.name",
+		sb.name AS "sb.name",
+		qy.name AS "qy.name"
+	</sql>
+	
+	<sql id="jcdarydaJoins">
+		
+		LEFT JOIN sys_office jgId ON jgId.id = a.jg_id
+		LEFT JOIN jcda_sbgl_view sb ON sb.id = a.zdy1
+		LEFT JOIN sys_area qy ON qy.id = a.zdy2
+	</sql>
+	
+    
+	<select id="get" resultType="Jcdaryda" >
+		SELECT 
+			<include refid="jcdarydaColumns"/>
+		FROM jcda_ygxx a
+		<include refid="jcdarydaJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Jcdaryda" >
+		SELECT 
+			<include refid="jcdarydaColumns"/>
+		FROM jcda_ygxx a
+		<include refid="jcdarydaJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="_databaseId == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="_databaseId == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="_databaseId == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="sb != null and sb.id != null and sb.id != ''">
+				AND a.zdy1 = #{sb.id}
+			</if>
+			<if test="qy != null and qy.id != null and qy.id != ''">
+				AND a.zdy2 = #{qy.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Jcdaryda" >
+		SELECT 
+			<include refid="jcdarydaColumns"/>
+		FROM jcda_ygxx a
+		<include refid="jcdarydaJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jcda_ygxx(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			jg_id,
+			code,
+			name,
+			regcode,
+			cardno,
+			enterdate,
+			sex,
+			national,
+			certificate,
+			telephone,
+			personstate,
+			birthdate,
+			position,
+			worktpye,
+			photo,
+			remark,
+			address,
+			shift,
+			weekday,
+			attpassword,
+			attpasswordconf,
+			regtype,
+			regpersonal,
+			zdy1,
+			zdy2,
+			zdy3,
+			zdy4,
+			zdy5,
+			zdy6,
+			zdy7,
+			zdy8,
+			zdy9,
+			zdy10
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{jgId.id},
+			#{code},
+			#{name},
+			#{regcode},
+			#{cardno},
+			#{enterdate},
+			#{sex},
+			#{national},
+			#{certificate},
+			#{telephone},
+			#{personstate},
+			#{birthdate},
+			#{position},
+			#{worktpye},
+			#{photo},
+			#{remark},
+			#{address},
+			#{shift},
+			#{weekday},
+			#{attpassword},
+			#{attpasswordconf},
+			#{regtype},
+			#{regpersonal},
+			#{sb.id},
+			#{qy.id},
+			#{zdy3},
+			#{zdy4},
+			#{zdy5},
+			#{zdy6},
+			#{zdy7},
+			#{zdy8},
+			#{zdy9},
+			#{zdy10}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jcda_ygxx SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			jg_id = #{jgId.id},
+			code = #{code},
+			name = #{name},
+			regcode = #{regcode},
+			cardno = #{cardno},
+			enterdate = #{enterdate},
+			sex = #{sex},
+			national = #{national},
+			certificate = #{certificate},
+			telephone = #{telephone},
+			personstate = #{personstate},
+			birthdate = #{birthdate},
+			position = #{position},
+			worktpye = #{worktpye},
+			photo = #{photo},
+			remark = #{remark},
+			address = #{address},
+			shift = #{shift},
+			weekday = #{weekday},
+			attpassword = #{attpassword},
+			attpasswordconf = #{attpasswordconf},
+			regtype = #{regtype},
+			regpersonal = #{regpersonal},
+			zdy1 = #{sb.id},
+			zdy2 = #{qy.id},
+			zdy3 = #{zdy3},
+			zdy4 = #{zdy4},
+			zdy5 = #{zdy5},
+			zdy6 = #{zdy6},
+			zdy7 = #{zdy7},
+			zdy8 = #{zdy8},
+			zdy9 = #{zdy9},
+			zdy10 = #{zdy10}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM jcda_ygxx
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE jcda_ygxx SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="Jcdaryda" statementType="STATEMENT">
+		select * FROM jcda_ygxx  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

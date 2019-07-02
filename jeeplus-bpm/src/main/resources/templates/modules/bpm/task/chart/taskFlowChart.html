@@ -1,0 +1,48 @@
+<div class="jp-card jp-card-wider-padding jp-card-padding-transition" style="margin-bottom: 24px;">
+    <div class="jp-card-head">
+        <div class="jp-card-head-wrapper">
+            <div class="jp-card-head-title">流程进度</div>
+        </div>
+    </div>
+    <div class="jp-card-body">
+        <div class="jp-steps jp-steps-horizontal jp-steps-label-horizontal">
+            <% for(var act in histoicFlowList){ %>
+            <% if(act.histIns.endTime !=null){ %>
+            <div class="jp-steps-item jp-steps-item-finish jp-steps-next-success">
+                <div class="jp-steps-item-tail"></div>
+                <div class="jp-steps-item-icon">
+                    <span class="jp-steps-icon jp-icon jp-icon-check"></span>
+                </div>
+                <div class="jp-steps-item-content">
+                    <div class="jp-steps-item-title">${act.histIns.activityName}</div>
+                    <div class="jp-steps-item-description">
+                        ${act.assigneeName}
+                        <i class="jp-icon jp-icon-dingding-o" style="margin-left: 8px;"></i>
+                        <div>${fn.formatDateTime(act.histIns.endTime)}</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <% }else{ %>
+            <div class="jp-steps-item jp-steps-item-process">
+                <div class="jp-steps-item-tail"></div>
+                <div class="jp-steps-item-icon">
+                    <span class="jp-steps-icon"><i class="jp-icon jp-icon-spin jp-icon-loading"></i></span>
+                </div>
+                <div class="jp-steps-item-content">
+                    <div class="jp-steps-item-title">${act.histIns.activityName}</div>
+                    <div class="jp-steps-item-description">
+                        ${act.assigneeName}
+                        <i class="jp-icon jp-icon-dingding-o" style="color: rgb(0, 160, 233); margin-left: 8px;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <% } %>
+            <% }%>
+        </div>
+    </div>
+</div>
+
+

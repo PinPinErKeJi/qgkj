@@ -1,0 +1,164 @@
+<%
+layout("/include/_dialog.html"){
+%>
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+
+					});
+
+		function save() {
+            var isValidate = jp.validateForm('#inputForm');//校验表单
+            if(!isValidate){
+                return false;
+			}else{
+				var pass = $("#pass").val();
+				var flag = check(pass);
+				if(!flag){
+					jp.alert("密码不为空且只能包含字母和数字");
+					return false;
+				}
+                var index = jp.loading();
+                jp.post("${ctx}/jcda_sbgl/jcdasbmc/save",$('#inputForm').serialize(),function(data){
+                    if(data.success){
+                        parent.refresh();
+                        var dialogIndex = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                        parent.layer.close(dialogIndex);
+                        jp.toastr_success(data.msg)
+                    }else{
+                        jp.toastr_error(data.msg);
+                    }
+                    jp.close(index);
+                })
+			}
+        }
+		function getDeviceKey(){
+			var ip = $("#ip").val();
+			if(!ip){
+				jp.alert("请输入IP");
+				return false;
+			}
+			var index = jp.loading("正在查询");
+			jp.get("${ctx}/jcda_sbgl/jcdasbmc/getDeviceKey?ip="+ip,function(data){
+				if(data.success){
+					$("#sbxlh").val(data.msg);
+                }else{
+                    jp.alert(data.msg);
+                }
+                jp.close(index);
+			});
+		};
+		function setPass(){
+			var id = $("#id").val();
+			if(!id){
+				jp.alert("新增模式下，不可设置。");
+				return false;
+			}
+			var ip = $("#ip").val();
+			if(!ip){
+				jp.alert("请输入IP");
+				return false;
+			}
+			var pass = $("#pass").val();
+			var flag = check(pass);
+			if(!flag){
+				jp.alert("密码不为空且只能包含字母和数字");
+				return false;
+			}
+			var index = jp.loading("正在设置");
+			jp.post("${ctx}/jcda_sbgl/jcdasbmc/setPass",{"rid":id,"ip":ip,"pass":pass},function(data){
+				if(data.success){
+					jp.alert(data.msg);
+                }else{
+                    jp.alert(data.msg);
+                }
+                jp.close(index);
+			});
+		};
+		function check(str){
+			var reg = /^[0-9a-zA-Z]+$/;
+			if(reg.test(str)){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	</script>
+<div class="white-box">
+		<form id="inputForm"  method="post" class="form-horizontal">
+		<input type="hidden" id="id" name="id" value="${jcdasbmc.id!}"/>
+		<table class="table table-bordered">
+		   <tbody>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">位置：</label></td>
+					<td class="width-35">
+						<#treeselect id="sb" name="sb.id" value="${jcdasbmc.sb.id!}"  labelName="sb.name" labelValue="${jcdasbmc.sb.name!}"
+							title="位置" url="/jcda_sbgl/jcdasbglwz/treeData" extId="${jcdasbmc.id}" class="jp-input required" allowClear="true"/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">设备号：</label></td>
+					<td class="width-35">
+						<input name="code" value="${jcdasbmc.code!}"    class="jp-input required"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">设备名称：</label></td>
+					<td class="width-35">
+						<input name="name" value="${jcdasbmc.name!}"    class="jp-input required"/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">设备用途：</label></td>
+					<td class="width-35">
+						<#select path="sbyt" value="${jcdasbmc.sbyt!}" items="${fn.getDictList('sbyt')}" itemLabel="label" itemValue="value" class=""/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">设备类型：</label></td>
+					<td class="width-35">
+						<#select path="sblx" value="${jcdasbmc.sblx!}" items="${fn.getDictList('sblx')}" itemLabel="label" itemValue="value" class=""/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">进出标识：</label></td>
+					<td class="width-35">
+						<#select path="jcbs" value="${jcdasbmc.jcbs!}" items="${fn.getDictList('jcbs')}" itemLabel="label" itemValue="value" class=""/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">IP：</label></td>
+					<td class="width-35">
+						<input id="ip" name="ip" value="${jcdasbmc.ip!}"    class="jp-input required"/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">端口：</label></td>
+					<td class="width-35">
+						<input name="dk" value="${jcdasbmc.dk!}"    class="jp-input "/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">密码：</label></td>
+					<td class="width-35">
+						<span class="jp-input-search jp-input-search-enter-button jp-input-affix-wrapper">
+							<input name="mm" id="pass" value="${jcdasbmc.mm!}" class="jp-input required"/>
+							<span class="jp-input-suffix">
+								<button type="button" onclick="setPass();" class="jp-btn jp-input-search-button jp-btn-primary">点击设置密码</button>
+							</span>
+						</span>
+					</td>
+					<td class="width-15 active"><label class="pull-right">设备序列号：</label></td>
+					<td class="width-35">
+						<span class="jp-input-search jp-input-search-enter-button jp-input-affix-wrapper">
+							<input name="sbxlh" id="sbxlh" value="${jcdasbmc.sbxlh!}" readonly="readonly" class="jp-input required"/>
+							<span class="jp-input-suffix">
+								<button type="button" onclick="getDeviceKey();" class="jp-btn jp-input-search-button jp-btn-primary">点击获取设备序列号</button>
+							</span>
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">备注：</label></td>
+					<td class="width-35" colspan="3">
+						<input name="bz" value="${jcdasbmc.bz!}"    class="jp-input "/>
+					</td>
+					
+		  		</tr>
+		 	</tbody>
+		</table>
+		</form>
+</div>
+<% } %>

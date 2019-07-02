@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.jcda_gxsz.mapper.JcdagxszMapper">
+    
+	<sql id="jcdagxszColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.weekday AS "weekday",
+		a.gxfs AS "gxfs",
+		a.swkssjj AS "sbtkssjj",
+		a.swjssjj AS "sbtjssjj",
+		a.swkssjc AS "sbtkssjc",
+		a.swjssjc AS "sbtjssjc",
+		a.xwkssjj AS "xwkssjj",
+		a.xwjssjj AS "xwjssjj",
+		a.xwkssjc AS "xwkssjc",
+		a.xwjssjc AS "xwjssjc",
+		a.swsc AS "swsc",
+		a.swts AS "swts",
+		a.xwsc AS "xwsc",
+		a.xwts AS "xwts"
+	</sql>
+	
+	<sql id="jcdagxszJoins">
+		
+	</sql>
+	
+	<select id="getLast" resultType="Jcdagxsz">
+		SELECT 
+			a.id AS "id",
+			a.weekday AS "weekday",
+			a.gxfs AS "gxfs",
+			a.swkssjj AS "sbtkssjj",
+			a.swjssjj AS "sbtjssjj",
+			a.swkssjc AS "sbtkssjc",
+			a.swjssjc AS "sbtjssjc",
+			a.xwkssjj AS "xwkssjj",
+			a.xwjssjj AS "xwjssjj",
+			a.xwkssjc AS "xwkssjc",
+			a.xwjssjc AS "xwjssjc",
+			a.swsc AS "swsc",
+			a.swts AS "swts",
+			a.xwsc AS "xwsc",
+			a.xwts AS "xwts"
+		FROM jcda_gxsz a 
+		order by a.update_date desc limit 0,1
+	</select>
+    
+	<select id="get" resultType="Jcdagxsz" >
+		SELECT 
+			<include refid="jcdagxszColumns"/>
+		FROM jcda_gxsz a
+		<include refid="jcdagxszJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Jcdagxsz" >
+		SELECT 
+			<include refid="jcdagxszColumns"/>
+		FROM jcda_gxsz a
+		<include refid="jcdagxszJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="weekday != null and weekday != ''">
+				AND a.weekday LIKE 
+					<if test="_databaseId == 'oracle'">'%'||#{weekday}||'%'</if>
+					<if test="_databaseId == 'mssql'">'%'+#{weekday}+'%'</if>
+					<if test="_databaseId == 'mysql'">concat('%',#{weekday},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Jcdagxsz" >
+		SELECT 
+			<include refid="jcdagxszColumns"/>
+		FROM jcda_gxsz a
+		<include refid="jcdagxszJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jcda_gxsz(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			weekday,
+			gxfs,
+			swkssjj,
+			swjssjj,
+			swkssjc,
+			swjssjc,
+			xwkssjj,
+			xwjssjj,
+			xwkssjc,
+			xwjssjc,
+			swsc,
+			swts,
+			xwsc,
+			xwts
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{weekday},
+			#{gxfs},
+			#{sbtkssjj},
+			#{sbtjssjj},
+			#{sbtkssjc},
+			#{sbtjssjc},
+			#{xwkssjj},
+			#{xwjssjj},
+			#{xwkssjc},
+			#{xwjssjc},
+			#{swsc},
+			#{swts},
+			#{xwsc},
+			#{xwts}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jcda_gxsz SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			weekday = #{weekday},
+			gxfs = #{gxfs},
+			swkssjj = #{sbtkssjj},
+			swjssjj = #{sbtjssjj},
+			swkssjc = #{sbtkssjc},
+			swjssjc = #{sbtjssjc},
+			xwkssjj = #{xwkssjj},
+			xwjssjj = #{xwjssjj},
+			xwkssjc = #{xwkssjc},
+			xwjssjc = #{xwjssjc},
+			swsc = #{swsc},
+			swts = #{swts},
+			xwsc = #{xwsc},
+			xwts = #{xwts}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM jcda_gxsz
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE jcda_gxsz SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="Jcdagxsz" statementType="STATEMENT">
+		select * FROM jcda_gxsz  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

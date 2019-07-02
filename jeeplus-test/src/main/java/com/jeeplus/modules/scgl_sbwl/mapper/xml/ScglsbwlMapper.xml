@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.scgl_sbwl.mapper.ScglsbwlMapper">
+    
+	<sql id="scglsbwlColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.userorg AS "userorg.id",
+		a.sbmc AS "sbmc",
+		a.sbwxnr AS "sbwxnr",
+		a.wxsqr AS "wxsqr",
+		a.wxsqsj AS "wxsqsj",
+				
+				
+				
+				
+				
+				
+				
+		userorg.name AS "userorg.name"
+	</sql>
+	
+	<sql id="scglsbwlJoins">
+		
+		LEFT JOIN sys_office userorg ON userorg.id = a.userorg
+	</sql>
+	
+    
+	<select id="get" resultType="Scglsbwl" >
+		SELECT 
+			<include refid="scglsbwlColumns"/>
+		FROM scgl_sbwl a
+		<include refid="scglsbwlJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Scglsbwl" >
+		SELECT 
+			<include refid="scglsbwlColumns"/>
+		FROM scgl_sbwl a
+		<include refid="scglsbwlJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="userorg != null and userorg.id != null and userorg.id != ''">
+				AND a.userorg = #{userorg.id}
+			</if>
+			<if test="sbmc != null and sbmc != ''">
+				AND a.sbmc LIKE 
+					<if test="_databaseId == 'oracle'">'%'||#{sbmc}||'%'</if>
+					<if test="_databaseId == 'mssql'">'%'+#{sbmc}+'%'</if>
+					<if test="_databaseId == 'mysql'">concat('%',#{sbmc},'%')</if>
+			</if>
+			<if test="beginWxsqsj != null and endWxsqsj != null ">
+				AND a.wxsqsj BETWEEN #{beginWxsqsj} AND #{endWxsqsj}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Scglsbwl" >
+		SELECT 
+			<include refid="scglsbwlColumns"/>
+		FROM scgl_sbwl a
+		<include refid="scglsbwlJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scgl_sbwl(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			userorg,
+			sbmc,
+			sbwxnr,
+			wxsqr,
+			wxsqsj
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{userorg.id},
+			#{sbmc},
+			#{sbwxnr},
+			#{wxsqr},
+			#{wxsqsj}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scgl_sbwl SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			userorg = #{userorg.id},
+			sbmc = #{sbmc},
+			sbwxnr = #{sbwxnr},
+			wxsqr = #{wxsqr},
+			wxsqsj = #{wxsqsj}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM scgl_sbwl
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE scgl_sbwl SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="Scglsbwl" statementType="STATEMENT">
+		select * FROM scgl_sbwl  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

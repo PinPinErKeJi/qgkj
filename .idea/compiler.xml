@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="jeeplus-quartz" />
+        <module name="jeeplus-core" />
+        <module name="jeeplus-admin" />
+        <module name="jeeplus-monitor" />
+        <module name="jeeplus-mail" />
+        <module name="jeeplus-ureport" />
+        <module name="jeeplus-bpm" />
+        <module name="jeeplus-test" />
+        <module name="jeeplus-tools" />
+        <module name="jeeplus-oa" />
+        <module name="jeeplus-calendar" />
+        <module name="jeeplus-web" />
+        <module name="jeeplus-cmd" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="jeeplus" target="1.8" />
+      <module name="jeeplus-admin" target="1.8" />
+      <module name="jeeplus-bpm" target="1.8" />
+      <module name="jeeplus-calendar" target="1.8" />
+      <module name="jeeplus-cmd" target="1.8" />
+      <module name="jeeplus-core" target="1.8" />
+      <module name="jeeplus-mail" target="1.8" />
+      <module name="jeeplus-monitor" target="1.8" />
+      <module name="jeeplus-oa" target="1.8" />
+      <module name="jeeplus-quartz" target="1.8" />
+      <module name="jeeplus-test" target="1.8" />
+      <module name="jeeplus-tools" target="1.8" />
+      <module name="jeeplus-ureport" target="1.8" />
+      <module name="jeeplus-web" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="jeeplus-admin" options="-parameters" />
+      <module name="jeeplus-bpm" options="-parameters" />
+      <module name="jeeplus-calendar" options="-parameters" />
+      <module name="jeeplus-cmd" options="-parameters" />
+      <module name="jeeplus-core" options="-parameters" />
+      <module name="jeeplus-mail" options="-parameters" />
+      <module name="jeeplus-monitor" options="-parameters" />
+      <module name="jeeplus-oa" options="-parameters" />
+      <module name="jeeplus-quartz" options="-parameters" />
+      <module name="jeeplus-test" options="-parameters" />
+      <module name="jeeplus-tools" options="-parameters" />
+      <module name="jeeplus-ureport" options="-parameters" />
+      <module name="jeeplus-web" options="-parameters -extdirs lib" />
+    </option>
+  </component>
+</project>

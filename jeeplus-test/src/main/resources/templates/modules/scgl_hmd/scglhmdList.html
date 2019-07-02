@@ -1,0 +1,79 @@
+<%
+layout("/include/_container.html", {title:"列表", parent:"黑名单"}){
+%>
+    <!-- 文件上传 -->
+    <div id="import-collapse" class="collapse white-box" style="position: relative; margin-bottom: 5px; display: none;">
+        <a class="jp-ti-close" onclick="$('#import-collapse').fadeToggle()">
+            <i class="icon iconfont icon-guanbi"></i>
+        </a>
+        <form id="importForm" method="POST" enctype="multipart/form-data" class="form form-horizontal clearfix">
+            <div class="col-xs-12 col-sm-6">
+                <input name="file" type="file" class="required jp-input">只允许导入&ldquo;xls&rdquo;或&ldquo;xlsx&rdquo;格式文件！<br>　
+
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <a id="btnImportExcel" class="jp-btn jp-btn-primary"><i class="fa fa-upload"></i> 开始上传</a>
+                <a id="btnDownloadTpl" class="jp-btn"><i class="fa fa-download"></i> 下载模板</a>
+            </div>　
+        </form>
+    </div>
+    <!-- 搜索框-->
+    <div id="search-collapse" class="white-box collapse" style="position: relative; margin-bottom: 5px; display: none;">
+        <a class="jp-ti-close" onclick="$('#search-collapse').fadeToggle()">
+            <i class="icon iconfont icon-guanbi"></i>
+        </a>
+        <form id="searchForm" class="form form-horizontal clearfix">
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="姓名：">姓名：</label>
+				<input name="name"  maxlength="64"  class=" jp-input"/>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="特征码：">特征码：</label>
+				<input name="tzm"  maxlength="64"  class=" jp-input"/>
+			</div>
+		<div class="col-xs-12 col-sm-6 col-md-4">
+             <div style="margin-top:26px">
+                 <a id="search" class="jp-btn jp-btn-primary"><i class="fa fa-search"></i> 查询</a>
+                 <a id="reset" class="jp-btn"><i class="fa fa-refresh"></i> 重置</a>
+            </div>
+        </div>
+        </form>
+    </div>
+
+	<div class="white-box">
+
+	<!-- 工具栏 -->
+	<div id="toolbar">
+			 <% if(shiro.hasPermission("scgl_hmd:scglhmd:add") ){ %>
+			 	<button id="add" class="jp-btn jp-btn-primary" onclick="add()">
+					<i class="glyphicon glyphicon-plus"></i> 新建
+				</button>
+			<% } %>
+			 <% if(shiro.hasPermission("scgl_hmd:scglhmd:edit") ){ %>
+			    <button id="edit" class="jp-btn" disabled onclick="edit()">
+	            	<i class="glyphicon glyphicon-edit"></i> 修改
+	        	</button>
+			<% } %>
+			 <% if(shiro.hasPermission("scgl_hmd:scglhmd:del") ){ %>
+				<button id="remove" class="jp-btn jp-btn-danger" disabled onclick="del()">
+	            	<i class="glyphicon glyphicon-remove"></i> 删除
+	        	</button>
+			<% } %>
+			 <% if(shiro.hasPermission("scgl_hmd:scglhmd:import") ){ %>
+<!--				<button id="import"  class="jp-btn" >-->
+<!--					<i class="icon iconfont icon-Import"></i> 导入-->
+<!--				</button>-->
+			<% } %>
+			 <% if(shiro.hasPermission("scgl_hmd:scglhmd:export") ){ %>
+	        	<button id="export" class="jp-btn">
+					<i class="icon iconfont icon-export"></i> 导出
+				</button>
+			 <% } %>
+		    </div>
+		
+	<!-- 表格 -->
+	<table id="scglhmdTable" class="table-bordered"   data-toolbar="#toolbar"></table>
+	</div>
+
+	<% include("scglhmdList.js"){} %>
+	<% } %>

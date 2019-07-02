@@ -1,0 +1,142 @@
+<div class="right-sidebar">
+    <div class="slimscrollright">
+        <div class="rpanel-title">主题方案<span>
+            <i class="icon iconfont icon-guanbi  right-side-toggle" style="top: -2px;font-size: 14px;font-weight: 400;"></i>
+        </span> </div>
+        <div class="r-panel-body">
+            <ul id="themecolors" class="m-t-20 jp-setTheme-color">
+                <script>
+                    $(document).ready(function () {
+                        var theme = "${fn.getCookie(request,'theme') == null?fn.getDefaultTheme():fn.getCookie(request,'theme')}";
+                        $("a."+theme).parent().addClass("working");
+                    })
+                </script>
+
+                <li>
+                    <a jp-event="setTheme" class="grey"  data-theme="grey" >
+                        <div class="jp-setTheme-header" style="background-color: #fff;"></div>
+                        <div class="jp-setTheme-side" style="background-color: #20222a;">
+                            <div class="jp-setTheme-logo" style="background-color: #20222a;"></div>
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a jp-event="setTheme" class="lynch"  data-theme="lynch" >
+                        <div class="jp-setTheme-header" style="background-color: #fff;"></div>
+                        <div class="jp-setTheme-side" style="background-color:#04142a;">
+                            <div class="jp-setTheme-logo" style="background-color: #04142a;"></div>
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a jp-event="setTheme" class="grey-header"  data-theme="grey-header" >
+                        <div class="jp-setTheme-header" style="background-color:#393D49;"></div>
+                        <div class="jp-setTheme-side">
+                            <div class="jp-setTheme-logo" style="background-color: #20222a;"></div>
+                        </div>
+                    </a>
+                </li>
+
+                <li> 
+                    <a jp-event="setTheme" class="green-header" data-theme="green-header">
+                    <div class="jp-setTheme-header" style="background-color: #2F9688;"></div>
+                        <div class="jp-setTheme-side">
+                            <div class="jp-setTheme-logo" style="background-color: #226A62;"></div>
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a jp-event="setTheme" class="dark-blue-header"  data-theme="dark-blue-header" >
+                        <div class="jp-setTheme-header" style="background-color: #1f9eff;"></div>
+                        <div class="jp-setTheme-side">
+                            <div class="jp-setTheme-logo" style="background-color: #0085e8;"></div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a jp-event="setTheme" class="dark-red-header" data-theme="dark-red-header">
+                        <div class="jp-setTheme-header" style="background-color: #AA3130;"></div>
+                        <div class="jp-setTheme-side" style="background-color: #28333E;">
+                            <div class="jp-setTheme-logo" style="background-color: #28333E;"></div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a jp-event="setTheme" class="green"  data-theme="green" >
+                        <div class="jp-setTheme-header" style="background-color: #fff;"></div>
+                        <div class="jp-setTheme-side" style="background-color: #00675d;">
+                            <div class="jp-setTheme-logo" style="background-color: #00675d;"></div>
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a jp-event="setTheme" class="dark-blue"  data-theme="dark-blue" >
+                        <div class="jp-setTheme-header" style="background-color: #fff;"></div>
+                        <div class="jp-setTheme-side">
+                            <div class="jp-setTheme-logo" style="background-color: #1f9eff;"></div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a jp-event="setTheme" class="dark-red" data-theme="dark-red">
+                        <div class="jp-setTheme-header" style="background-color: #fff;"></div>
+                        <div class="jp-setTheme-side">
+                            <div class="jp-setTheme-logo" style="background-color: #e63e3e;"></div>
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a jp-event="setTheme" class="white"  data-theme="white" >
+                        <div class="jp-setTheme-header" style="background-color: #fff;"></div>
+                        <div class="jp-setTheme-side" style="background-color: #fff;">
+                            <div class="jp-setTheme-logo" style="background-color: #fff;"></div>
+                        </div>
+                    </a>
+                </li>
+
+
+                <li>
+                    <a jp-event="setTheme" class="blue-header"  data-theme="blue-header" >
+                        <div class="jp-setTheme-header" style="background-color: #009eff;"></div>
+                        <div class="jp-setTheme-side" style="background-color: #fff;">
+                            <div class="jp-setTheme-logo" style="background-color: #009eff;"></div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a jp-event="setTheme" class="red-header"  data-theme="red-header" >
+                        <div class="jp-setTheme-header" style="background-color: #F5222D;"></div>
+                        <div class="jp-setTheme-side" style="background-color: #fff;">
+                            <div class="jp-setTheme-logo" style="background-color: #F5222D;"></div>
+                        </div>
+                    </a>
+                </li>
+
+                <!--<li><a href="javascript:void(0)" data-theme="default" class="default-theme">1</a></li>-->
+                <!--<li><a href="javascript:void(0)" data-theme="green" class="green-theme">2</a></li>-->
+                <!--<li><a href="javascript:void(0)" data-theme="yellow" class="yellow-theme">3</a></li>-->
+                <!--<li><a href="javascript:void(0)" data-theme="red" class="red-theme">4</a></li>-->
+                <!--<li><a href="javascript:void(0)" data-theme="cyan" class="cyan-theme">5</a></li>-->
+                <!--<li><a href="javascript:void(0)" data-theme="purple" class="purple-theme">6</a></li>-->
+                <!--<li><a href="javascript:void(0)" data-theme="orange" class="orange-theme">7</a></li>-->
+                <!--<li><a href="javascript:void(0)" data-theme="blue" class="blue-theme">8</a></li>-->
+                <!--<li><b>暗色菜单风格</b></li>-->
+                <!--<br/>-->
+                <!--<li><a href="javascript:void(0)" data-theme="default-dark" class="default-dark-theme">9</a></li>-->
+                <!--<li><a href="javascript:void(0)" data-theme="green-dark" class="green-dark-theme">10</a></li>-->
+                <!--<li><a href="javascript:void(0)" data-theme="yellow-dark" class="yellow-dark-theme">11</a></li>-->
+                <!--<li><a href="javascript:void(0)" data-theme="red-dark" class="red-dark-theme ≈">12</a></li>-->
+                <!--<li><a href="javascript:void(0)" data-theme="cyan-dark" class="cyan-dark-theme">13</a></li>-->
+                <!--<li><a href="javascript:void(0)" data-theme="purple-dark" class="purple-dark-theme">14</a></li>-->
+                <!--<li><a href="javascript:void(0)" data-theme="orange-dark" class="orange-dark-theme">15</a></li>-->
+                <!--<li><a href="javascript:void(0)" data-theme="blue-dark" class="blue-dark-theme">16</a></li>-->
+            </ul>
+
+        </div>
+    </div>
+</div>

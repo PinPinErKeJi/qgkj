@@ -1,0 +1,63 @@
+<%
+layout("/include/_dialog.html"){
+%>
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+							//富文本初始化
+			$('#contents').summernote({
+				height: 300,
+                lang: 'zh-CN',
+                callbacks: {
+                    onChange: function(contents, $editable) {
+                        $("input[name='contents']").val($('#contents').summernote('code'));//取富文本的值
+                    }
+                }
+            });
+		});
+
+		function save() {
+            var isValidate = jp.validateForm('#inputForm');//校验表单
+            if(!isValidate){
+                return false;
+			}else{
+                var index = jp.loading();
+                jp.post("${ctx}/test/note/testNote/save",$('#inputForm').serialize(),function(data){
+                    if(data.success){
+                        parent.refresh();
+                        var dialogIndex = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                        parent.layer.close(dialogIndex);
+                        jp.toastr_success(data.msg)
+
+                    }else{
+                        jp.toastr_error(data.msg);
+                    }
+                    jp.close(index);
+                })
+			}
+
+        }
+	</script>
+<div class="white-box">
+		<form id="inputForm"  method="post" class="form-horizontal">
+		<input type="hidden" name="id" value="${testNote.id!}"/>
+		<table class="table table-bordered">
+		   <tbody>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">标题：</label></td>
+					<td class="width-35">
+						<input name="title" value="${testNote.title!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">内容：</label></td>
+					<td class="width-35">
+                        <input type="hidden" name="contents"/>
+						<div id="contents">
+                          ${fn.unescapeHtml(testNote.contents)}
+                        </div>
+				</td>
+				</tr>
+		 	</tbody>
+		</table>
+		</form>
+</div>
+<% } %>

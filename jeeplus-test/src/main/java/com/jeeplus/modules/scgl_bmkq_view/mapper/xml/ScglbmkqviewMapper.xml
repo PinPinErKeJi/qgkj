@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.scgl_bmkq_view.mapper.ScglbmkqviewMapper">
+    
+	<sql id="scglbmkqviewColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.userorg AS "userorg.id",
+		a.department AS "dept.id",
+		a.rs AS "rs",
+		a.sjrs AS "sjrs",
+		a.qjrs AS "qjrs",
+		a.iyear AS "iyear",
+		a.imonth AS "imonth",
+				
+				
+				
+				
+				
+				
+				
+		userorg.name AS "userorg.name",
+				
+		dept.name AS "dept.name"
+	</sql>
+	
+	<sql id="scglbmkqviewJoins">
+		
+		LEFT JOIN sys_office userorg ON userorg.id = a.userorg
+		LEFT JOIN sys_office dept ON dept.id = a.department
+	</sql>
+	
+    
+	<select id="get" resultType="Scglbmkqview" >
+		SELECT 
+			<include refid="scglbmkqviewColumns"/>
+		FROM scgl_bmkq_view a
+		<include refid="scglbmkqviewJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Scglbmkqview" >
+		SELECT 
+			<include refid="scglbmkqviewColumns"/>
+		FROM scgl_bmkq_view a
+		<include refid="scglbmkqviewJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="userorg != null and userorg.id != null and userorg.id != ''">
+				AND a.userorg = #{userorg.id}
+			</if>
+			<if test="iyear != null and iyear != ''">
+				AND a.iyear = #{iyear}
+			</if>
+			<if test="imonth != null and imonth != ''">
+				AND a.imonth = #{imonth}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Scglbmkqview" >
+		SELECT 
+			<include refid="scglbmkqviewColumns"/>
+		FROM scgl_bmkq_view a
+		<include refid="scglbmkqviewJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scgl_bmkq_view(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			userorg,
+			department,
+			rs,
+			sjrs,
+			qjrs,
+			iyear,
+			imonth
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{userorg.id},
+			#{dept.id},
+			#{rs},
+			#{sjrs},
+			#{qjrs},
+			#{iyear},
+			#{imonth}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scgl_bmkq_view SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			userorg = #{userorg.id},
+			department = #{dept.id},
+			rs = #{rs},
+			sjrs = #{sjrs},
+			qjrs = #{qjrs},
+			iyear = #{iyear},
+			imonth = #{imonth}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM scgl_bmkq_view
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE scgl_bmkq_view SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="Scglbmkqview" statementType="STATEMENT">
+		select * FROM scgl_bmkq_view  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

@@ -1,0 +1,70 @@
+<%
+layout("/include/_container.html", {title:"查看邮件", parent:"我的信箱"}){
+%>
+<div class="white-box">
+    <!-- row -->
+    <div class="row">
+        <div class="col-lg-2 col-md-3  col-sm-12 col-xs-12 inbox-panel">
+            <div><a href="${ctx}/mailCompose/sendLetter" class="jp-btn jp-btn-primary btn-block waves-effect waves-light"
+                    data-pjax>写信</a>
+                <div class="list-group mail-list m-t-20">
+                    <a href="${ctx}/mailBox/list?orderBy=sendtime desc" class="list-group-item active" data-pjax>收件箱
+                        <span class="label label-rouded label-success pull-right">${noReadCount!}/${mailBoxCount!}</span></a>
+                    <a href="${ctx}/mailCompose/list?status=1&orderBy=sendtime desc" class="list-group-item" data-pjax>已发送
+                        <span class="label label-rouded label-warning pull-right">${mailComposeCount!}</span></a>
+                    <a href="${ctx}/mailCompose/list?status=0&orderBy=sendtime desc" class="list-group-item" data-pjax>草稿箱
+                        <span class="label label-rouded label-default pull-right"
+                              data-pjax>${mailDraftCount!}</span></a>
+                </div>
+                <h3 class="panel-title m-t-40 m-b-0">标签</h3>
+                <hr class="m-t-5">
+                <div class="list-group b-0 mail-list">
+                    <a href="#" class="list-group-item"><span class="fa fa-circle text-info m-r-10"></span>工作</a>
+                    <a href="#" class="list-group-item"><span class="fa fa-circle text-warning m-r-10"></span>家庭</a>
+                    <a href="#" class="list-group-item"><span class="fa fa-circle text-purple m-r-10"></span>个人</a>
+                    <a href="#" class="list-group-item"><span class="fa fa-circle text-danger m-r-10"></span>朋友</a>
+                    <a href="#" class="list-group-item"><span class="fa fa-circle text-success m-r-10"></span>社交</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-10 col-md-9 col-sm-8 col-xs-12 mail_listing">
+            <div class="media m-b-30 p-t-20">
+                <h4 class="font-bold m-t-0">${mailBox.mail.title!}</h4>
+                <hr>
+                <h4 class="text-danger m-0">From:</h4>
+                <% if(isEmpty(mailBox.sender.photo)){ %>
+                <span class="jp-avatar jp-avatar-circle jp-avatar-icon"
+                      style="background-color: rgb(135, 208, 104);">
+                                                    <i class="jp-icon jp-icon-user">
+                                                    </i>
+                                                </span>
+                <% } else{ %>
+                <img class=" thumb-sm img-circle" src="${mailBox.sender.photo!}" alt="">
+                <%}%>
+                ${mailBox.sender.name!}
+                <div class="media-body"><span class="media-meta pull-right"> ${mailBox.sendtime!,dateFormat="yyyy-MM-dd hh:mm:ss"}</span>
+                </div>
+            </div>
+            ${fn.unescapeHtml(mailBox.mail.content!)}
+            <hr/>
+            <div class="b-all p-20">
+                <p class="p-b-20">点击 <a href="${ctx}/mailCompose/replyLetter?id=${mailBox.id!}" data-pjax>回复</a> 或 <a
+                        href="#" onclick="del('${mailBox.id!}')">删除</a></p>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</div>
+<script>
+    function del(id) {
+        jp.confirm('确认要删除该站内信吗？', function () {
+            jp.get('${ctx}/mailBox/delete?id=' + id, function (data) {
+                if (data.success) {
+                    jp.toastr_success("删除信件成功!");
+                    jp.go("${ctx}/mailBox/list");
+                }
+            })
+        })
+    }
+</script>
+<% } %>

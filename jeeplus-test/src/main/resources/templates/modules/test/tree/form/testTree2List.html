@@ -1,0 +1,29 @@
+<%
+layout("/include/_container.html", {title:"列表", parent:"组织机构"}){
+%>
+	<div class="white-box">
+			<!-- 工具栏 -->
+			<div class="row">
+			<div class="col-sm-12">
+				<div class="pull-left" style="margin-bottom: 16px">
+					 <% if(shiro.hasPermission("test:tree:form:testTree2:add") ){ %>
+						<a id="add" class="jp-btn jp-btn-primary" onclick="add()"><i class="glyphicon glyphicon-plus"></i> 新建</a><!-- 增加按钮 -->
+					<% } %>
+			       		<button class="jp-btn"  onclick="refresh()" title="刷新"><i class="glyphicon glyphicon-repeat"></i> 刷新</button>
+				</div>
+			</div>
+			</div>
+			<table id="testTree2TreeTable" class="table table-hover">
+				<thead>
+					<tr>
+						<th>名称</th>
+						<th>备注信息</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody id="testTree2TreeTableList"></tbody>
+			</table>
+	</div>
+
+	<% include("testTree2List.js"){} %>
+	<% } %>

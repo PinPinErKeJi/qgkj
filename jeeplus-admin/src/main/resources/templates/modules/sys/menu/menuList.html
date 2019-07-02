@@ -1,0 +1,57 @@
+<%
+layout("/include/_container.html",{title:"菜单管理", parent:"系统设置"}){
+%>
+	<div class="row">
+			<div id="left"  class="animated col-sm-12">
+				<div class="white-box">
+				<!-- 工具栏 -->
+				<div class="pull-left " style="margin-bottom: 16px">
+					<% if(shiro.hasPermission("sys:menu:add")) { %>
+						<button id="add" class="jp-btn jp-btn-primary" onclick="jp.openSaveDialog('新建菜单', '${ctx}/sys/menu/form','800px', '500px')"><i class="fa fa-plus"></i> 新建菜单</button><!-- 增加按钮 -->
+					<%}%>
+					<button class="jp-btn" onclick="refreshMenu()" ><i class="fa fa-repeat"></i> 刷新</button>
+				</div><!-- 工具栏结束 -->
+
+				<table id="treeTable" class="table table-hover">
+					<thead>
+						<tr>
+							<th>名称</th>
+							<th>链接</th>
+							<th>排序</th>
+							<th>显示/隐藏</th>
+							<th>权限标识</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				</div>
+	 		</div>
+	 		
+	 		 
+		    <div  id="right" class=" col-sm-6" style="padding-left: 0px;display:none">
+				<div class="panel panel-default white-box">
+				<div class="panel-heading">
+					<a class="jp-ti-close" style="right: 20px !important;" onclick="hideDataRule()">
+						<i class="icon iconfont icon-guanbi"></i>
+					</a>
+					<h3 class="panel-title"><label>数据规则列表，所属菜单: </label><font id="menuLabel"></font><input type="hidden" id="menuId"/></h3>
+				</div>
+				<div class="panel-body">
+				 <div id="dataRuleToolbar">
+					<button id="dataRuleAddButton"  class="jp-btn jp-btn-primary" title="添加规则"><i class="fa fa-plus"></i> 添加规则</button>
+				</div>
+				 <!-- 表格 -->
+			    <table id="dataRuleTable"
+			           data-toolbar="#dataRuleToolbar"
+			           data-id-field="id">
+			    </table>
+			   </div>
+				</div>
+			</div>
+	</div>
+
+<% include("menuList.js"){} %>
+<% include("menu-dataRuleList.js"){} %>
+<% } %>

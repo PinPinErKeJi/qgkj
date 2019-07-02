@@ -1,0 +1,103 @@
+<%
+layout("/include/_container.html", {title:"日志查询", parent:"系统监控"}){
+%>
+<script>
+
+	function getLog(value) {
+
+	    $("#type").val(value);
+        $table.bootstrapTable('refresh');
+    }
+
+</script>
+
+<div class="white-box">
+
+	<div class="vtabs customvtab">
+		<ul class="nav tabs-vertical">
+			<li class="tab active" >
+				<a data-toggle="tab" onclick="getLog(1)" href="#" aria-expanded="false">
+					<span>登录日志</span>
+				</a>
+			</li>
+			<li class="tab">
+				<a data-toggle="tab" onclick="getLog(2)" href="#" aria-expanded="true">
+					<span>访问日志</span>
+				</a>
+			</li>
+			<li class="tab">
+				<a aria-expanded="false" onclick="getLog(3)" data-toggle="tab" href="#">
+					<span>异常日志</span>
+				</a>
+			</li>
+		</ul>
+		<div class="tab-content" style="padding-top: 10px;padding-left: 15px;">
+
+			<!-- 搜索 -->
+			<div id="search-collapse" class="white-box collapse"  style="position:relative; margin-bottom: 5px; background: #fafafa;">
+				<a class="jp-ti-close" onclick="$('#search-collapse').fadeToggle()">
+					<i class="icon iconfont icon-guanbi"></i>
+				</a>
+				<form id="searchForm" class="form form-horizontal clearfix" >
+					<input type="hidden" id="type" name="type" value="1">
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<label class="label-item single-overflow pull-left" title="操作菜单：">操作菜单：</label>
+						<input id="title" name="title" type="text" maxlength="50" class="jp-input"/>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<label class="label-item single-overflow pull-left" title="用户id：">操作用户：</label>
+						<input id="createBy.name" name="createBy.name" type="text" maxlength="50" class="jp-input"/>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<label class="label-item single-overflow pull-left" title="URI：">URI：</label>
+						<input id="requestUri" name="requestUri" type="text" maxlength="50"  class="jp-input"/>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<label class="label-item single-overflow pull-left" title="日期范围：">日期范围：</label>
+						<div class="col-xs-12" style="margin-left: -25px;">
+							<div class="col-xs-12 col-sm-5">
+				   <span class="jp-calendar-picker">
+							<input readonly="" id="beginDate" name="beginDate" placeholder="请选择日期" class="jp-calendar-picker-input jp-input">
+							<span class="jp-calendar-picker-icon"></span>
+					</span>
+							</div>
+							<div class="col-xs-12 col-sm-1">
+								~
+							</div>
+							<div class="col-xs-12 col-sm-5">
+					<span class="jp-calendar-picker">
+							<input readonly="" id="endDate" name="endDate" placeholder="请选择日期" class="jp-calendar-picker-input jp-input">
+							<span class="jp-calendar-picker-icon"></span>
+					</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<div style="margin-top:26px">
+							<a  id="search" class="jp-btn jp-btn-primary"><i class="fa fa-search"></i> 查询</a>
+							<a  id="reset" class="jp-btn" ><i class="fa fa-refresh"></i> 重置</a>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<!-- 工具栏 -->
+			<div id="toolbar">
+				<% if(shiro.hasPermission("sys:log:del")){ %>
+				<button id="remove" class="jp-btn jp-btn-danger" disabled onclick="deleteAll()">
+					<i class="fa fa-remove"></i> 删除
+				</button>
+				<button class="jp-btn jp-btn-danger"  onclick="empty()"  title="清空"><i class="fa fa-trash"></i> 清空</button>
+				<% } %>
+
+			</div>
+			<!-- 表格 -->
+			<table id="table"
+				   data-toolbar="#toolbar">
+			</table>
+		</div>
+	</div>
+
+</div>
+<% include("logList.js"){} %>
+<% } %>

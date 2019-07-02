@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache updateCheck="false" name="shiroEhcahe">
+
+	<diskStore path="../temp/jeeplus/ehcache/shiro" />
+
+	<!-- 默认缓存配置. -->
+	<defaultCache maxEntriesLocalHeap="100" eternal="false" timeToIdleSeconds="1800" timeToLiveSeconds="3600"
+		overflowToDisk="true" maxEntriesLocalDisk="100000" />
+	
+</ehcache>

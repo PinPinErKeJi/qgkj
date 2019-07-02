@@ -1,0 +1,126 @@
+<%
+layout("/include/_container.html", {title:"列表", parent:"设备名称"}){
+%>
+    <div class="row">
+    <div class="col-sm-3 col-md-2" style="padding-right: 5px">
+        <div class="white-box">
+            <div>
+			<div style="width: calc(100% - 50px);float: left">
+			<span class="jp-input-search jp-input-affix-wrapper " style="margin-bottom: 5px;">
+				<input id="search_q" placeholder="查找..." class="jp-input" type="text">
+				<span class="jp-input-suffix">
+					<i class="jp-icon jp-icon-search jp-input-search-icon"></i>
+				</span>
+			</span>
+			</div>
+			<div style="width: 45px; float:right">
+               <button  class="jp-btn jp-btn-primary"  onclick="jp.openSaveDialog('新建设备位置', '${ctx}/jcda_sbgl/jcdasbglwz/form/add','800px', '500px')">
+                <i class="fa fa-plus"></i>
+                </button>
+            </div>
+            </div>
+            <div id="jcdasbglwzjsTree"></div>
+        </div>
+    </div>
+    <div class="col-sm-9 col-md-10" style="padding-left: 0px">
+
+	
+				<!-- 文件上传 -->
+    <div id="import-collapse" class="white-box collapse" style="position:relative;margin-bottom: 5px">
+        <a class="jp-ti-close" onclick="$('#import-collapse').fadeToggle()">
+            <i class="icon iconfont icon-guanbi"></i>
+        </a>
+        <form id="importForm" method="POST" enctype="multipart/form-data" class="form form-horizontal clearfix">
+            <div class="col-xs-12 col-sm-6">
+                <input name="file" type="file" class="required jp-input">只允许导入&ldquo;xls&rdquo;或&ldquo;xlsx&rdquo;格式文件！<br>　
+
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <a id="btnImportExcel" class="jp-btn jp-btn-primary"><i class="fa fa-upload"></i> 开始上传</a>
+                <a id="btnDownloadTpl" class="jp-btn"><i class="fa fa-download"></i> 下载模板</a>
+            </div>　
+        </form>
+    </div>
+    <!-- 搜索框-->
+    <div id="search-collapse" class="white-box collapse" style="position: relative; margin-bottom: 5px; display: none;">
+        <a class="jp-ti-close" onclick="$('#search-collapse').fadeToggle()">
+            <i class="icon iconfont icon-guanbi"></i>
+        </a>
+        <form id="searchForm" class="form form-horizontal clearfix">
+						 <div class="col-xs-12 col-sm-6 col-md-4">
+							<label class="label-item single-overflow pull-left" title="位置：">位置：</label>
+							<#treeselect id="sb" name="sb.id" labelName="sb.name"
+								title="位置" url="/jcda_sbgl/jcdasbglwz/treeData" extId="${jcdasbmc.id}" class="jp-input " allowClear="true"/>
+						</div>
+						 <div class="col-xs-12 col-sm-6 col-md-4">
+							<label class="label-item single-overflow pull-left" title="设备号：">设备号：</label>
+							<input name="code"  maxlength="64"  class=" jp-input"/>
+						</div>
+						 <div class="col-xs-12 col-sm-6 col-md-4">
+							<label class="label-item single-overflow pull-left" title="设备名称：">设备名称：</label>
+							<input name="name"  maxlength="64"  class=" jp-input"/>
+						</div>
+						 <div class="col-xs-12 col-sm-6 col-md-4">
+							<label class="label-item single-overflow pull-left" title="设备用途：">设备用途：</label>
+				<#select path="sbyt" items="${fn.getDictList('sbyt')}" itemLabel="label" itemValue="value"/>
+						</div>
+						 <div class="col-xs-12 col-sm-6 col-md-4">
+							<label class="label-item single-overflow pull-left" title="设备类型：">设备类型：</label>
+				<#select path="sblx" items="${fn.getDictList('sblx')}" itemLabel="label" itemValue="value"/>
+						</div>
+						 <div class="col-xs-12 col-sm-6 col-md-4">
+							<label class="label-item single-overflow pull-left" title="进出标识：">进出标识：</label>
+				<#select path="jcbs" items="${fn.getDictList('jcbs')}" itemLabel="label" itemValue="value"/>
+						</div>
+					 <div class="col-xs-12 col-sm-6 col-md-4">
+             <div style="margin-top:26px">
+                 <a id="search" class="jp-btn jp-btn-primary"><i class="fa fa-search"></i> 查询</a>
+                 <a id="reset" class="jp-btn"><i class="fa fa-refresh"></i> 重置</a>
+            </div>
+					</div>
+				</form>
+
+				</div>
+
+	<div class="white-box">
+
+	<!-- 工具栏 -->
+	<div id="toolbar">
+			 <% if(shiro.hasPermission("jcda_sbgl:jcdasbmc:add") ){ %>
+			 	<button id="add" class="jp-btn jp-btn-primary" onclick="add()">
+					<i class="glyphicon glyphicon-plus"></i> 新建
+				</button>
+			<% } %>
+			 <% if(shiro.hasPermission("jcda_sbgl:jcdasbmc:edit") ){ %>
+			    <button id="edit" class="jp-btn" disabled onclick="edit()">
+	            	<i class="glyphicon glyphicon-edit"></i> 修改
+	        	</button>
+			<% } %>
+			 <% if(shiro.hasPermission("jcda_sbgl:jcdasbmc:del") ){ %>
+				<button id="remove" class="jp-btn jp-btn-danger" disabled onclick="del()">
+	            	<i class="glyphicon glyphicon-remove"></i> 删除
+	        	</button>
+			<% } %>
+			<% if(shiro.hasPermission("jcda_sbgl:jcdasbmc:edit") ){ %>
+			    <button id="time" class="jp-btn" disabled onclick="setTime()">
+	            	<i class="glyphicon"></i> 同步时间
+	        	</button>
+			<% } %>
+			<!--  <% if(shiro.hasPermission("jcda_sbgl:jcdasbmc:import") ){ %>
+				<button id="import"  class="jp-btn" >
+					<i class="icon iconfont icon-Import"></i> 导入
+				</button>
+			<% } %>
+			 <% if(shiro.hasPermission("jcda_sbgl:jcdasbmc:export") ){ %>
+	        	<button id="export" class="jp-btn">
+					<i class="icon iconfont icon-export"></i> 导出
+				</button>
+			 <% } %> -->
+		    </div>
+		
+	<!-- 表格 -->
+	<table id="jcdasbmcTable" class="table-bordered"   data-toolbar="#toolbar"></table>
+	</div>
+	<% include("jcdasbglwzTreeList.js"){} %>
+	<% include("jcdasbmcList.js"){} %>
+	<% } %>

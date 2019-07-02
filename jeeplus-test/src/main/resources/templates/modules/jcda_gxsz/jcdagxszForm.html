@@ -1,0 +1,177 @@
+<% layout("/include/_dialog.html"){ %>
+<link rel="stylesheet" href="${ctxStatic}/layui/css/layui.css" />
+<script type="text/javascript">
+		$(document).ready(function() {
+				       
+		});
+
+		function save() {
+            var isValidate = jp.validateForm('#inputForm');//校验表单
+            if(!isValidate){
+                return false;
+			}else{
+                var index = jp.loading();
+                jp.post("${ctx}/jcda_gxsz/jcdagxsz/save",$('#inputForm').serialize(),function(data){
+                    if(data.success){
+                        parent.refresh();
+                        var dialogIndex = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                        parent.layer.close(dialogIndex);
+                        jp.toastr_success(data.msg)
+
+                    }else{
+                        jp.toastr_error(data.msg);
+                    }
+                    jp.close(index);
+                })
+			}
+
+        }
+	</script>
+<div class="white-box">
+	<form id="inputForm" method="post" class="form-horizontal">
+		<input type="hidden" name="id" value="${jcdagxsz.id!}" />
+		<table class="table table-bordered">
+			<tbody>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">公休：</label></td>
+					<td class="width-35"><#select path="weekday"
+							value="${jcdagxsz.weekday!}" items="${fn.getDictList('weekday')}"
+							itemLabel="label" itemValue="value" class="" /></td>
+					<td class="width-15 active"><label class="pull-right">公休范围：</label></td>
+					<td class="width-35"><#checkbox path="gxfs"
+							values="${jcdagxsz.gxfs}" items="${fn.getDictList('gxfw')}"
+							values="${jcdagxsz.gxfs}" itemLabel="label" itemValue="value"
+							class="" /></td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">上午开始时间（进）：</label></td>
+					<td class="width-35"><span class="jp-calendar-picker">
+							<input readonly="" id="sbtkssjj" name="sbtkssjj"
+							placeholder="请选择日期" class="jp-calendar-picker-input jp-input   "
+							value="${jcdagxsz.sbtkssjj!}">
+							<span class="jp-calendar-picker-icon"></span>
+					</span></td>
+					<td class="width-15 active"><label class="pull-right">上午结束时间（进）：</label></td>
+					<td class="width-35"><span class="jp-calendar-picker">
+							<input readonly="readonly" id="sbtjssjj" name="sbtjssjj"
+							placeholder="请选择日期" class="jp-calendar-picker-input jp-input   "
+							value="${jcdagxsz.sbtjssjj!}">
+							<span class="jp-calendar-picker-icon"></span>
+					</span></td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">上午开始时间（出）：</label></td>
+					<td class="width-35"><span class="jp-calendar-picker">
+							<input readonly="readonly" id="sbtkssjc" name="sbtkssjc"
+							placeholder="请选择日期" class="jp-calendar-picker-input jp-input   "
+							value="${jcdagxsz.sbtkssjc!}">
+							<span class="jp-calendar-picker-icon"></span>
+					</span></td>
+					<td class="width-15 active"><label class="pull-right">上午结束时间（出）：</label></td>
+					<td class="width-35"><span class="jp-calendar-picker">
+							<input readonly="readonly" id="sbtjssjc" name="sbtjssjc"
+							placeholder="请选择日期" class="jp-calendar-picker-input jp-input   "
+							value="${jcdagxsz.sbtjssjc!}">
+							<span class="jp-calendar-picker-icon"></span>
+					</span></td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">下午开始时间（进）：</label></td>
+					<td class="width-35"><span class="jp-calendar-picker">
+							<input readonly="readonly" id="xwkssjj" name="xwkssjj"
+							placeholder="请选择日期" class="jp-calendar-picker-input jp-input   "
+							value="${jcdagxsz.xwkssjj!}">
+							<span class="jp-calendar-picker-icon"></span>
+					</span></td>
+					<td class="width-15 active"><label class="pull-right">下午结束时间（进）：</label></td>
+					<td class="width-35"><span class="jp-calendar-picker">
+							<input readonly="readonly" id="xwjssjj" name="xwjssjj"
+							placeholder="请选择日期" class="jp-calendar-picker-input jp-input   "
+							value="${jcdagxsz.xwjssjj!}">
+							<span class="jp-calendar-picker-icon"></span>
+					</span></td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">下午开始时间（出）：</label></td>
+					<td class="width-35"><span class="jp-calendar-picker">
+							<input readonly="readonly" id="xwkssjc" name="xwkssjc"
+							placeholder="请选择日期" class="jp-calendar-picker-input jp-input   "
+							value="${jcdagxsz.xwkssjc!}">
+							<span class="jp-calendar-picker-icon"></span>
+					</span></td>
+					<td class="width-15 active"><label class="pull-right">下午结束时间（出）：</label></td>
+					<td class="width-35"><span class="jp-calendar-picker">
+							<input readonly="readonly" id="xwjssjc" name="xwjssjc"
+							placeholder="请选择日期" class="jp-calendar-picker-input jp-input   "
+							value="${jcdagxsz.xwjssjc!}">
+							<span class="jp-calendar-picker-icon"></span>
+					</span></td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">上午时长：</label></td>
+					<td class="width-35"><input name="swsc"
+						value="${jcdagxsz.swsc!}" class="jp-input " /></td>
+					<td class="width-15 active"><label class="pull-right">上午天数：</label></td>
+					<td class="width-35"><input name="swts"
+						value="${jcdagxsz.swts!}" class="jp-input " /></td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">下午时长：</label></td>
+					<td class="width-35"><input name="xwsc"
+						value="${jcdagxsz.xwsc!}" class="jp-input " /></td>
+					<td class="width-15 active"><label class="pull-right">下午天数：</label></td>
+					<td class="width-35"><input name="xwts"
+						value="${jcdagxsz.xwts!}" class="jp-input " /></td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+<script src="${ctxStatic}/layui/layui.js"></script>
+<script type="text/javascript">
+layui.use('laydate', function(){
+	var laydate = layui.laydate;
+	//时间选择器
+	laydate.render({
+	  elem: '#sbtkssjj'
+	  ,type: 'time'
+	  ,theme: 'molv'
+	});
+	laydate.render({
+	  elem: '#sbtjssjj'
+	  ,type: 'time'
+	  ,theme: 'molv'
+	});
+	laydate.render({
+	  elem: '#sbtkssjc'
+	  ,type: 'time'
+	  ,theme: 'molv'
+	});
+	laydate.render({
+	  elem: '#sbtjssjc'
+	  ,type: 'time'
+	  ,theme: 'molv'
+	});
+	laydate.render({
+	  elem: '#xwkssjj'
+	  ,type: 'time'
+	  ,theme: 'molv'
+	});
+	laydate.render({
+	  elem: '#xwjssjj'
+	  ,type: 'time'
+	  ,theme: 'molv'
+	});
+	laydate.render({
+	  elem: '#xwkssjc'
+	  ,type: 'time'
+	  ,theme: 'molv'
+	});
+	laydate.render({
+	  elem: '#xwjssjc'
+	  ,type: 'time'
+	  ,theme: 'molv'
+	});
+});
+</script>
+<% } %>

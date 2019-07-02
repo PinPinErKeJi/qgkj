@@ -1,0 +1,161 @@
+<%
+layout("/include/_dialog.html"){
+%>
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+					});
+
+		function save() {
+            var isValidate = jp.validateForm('#inputForm');//校验表单
+            if(!isValidate){
+                return false;
+			}else{
+                var index = jp.loading();
+                jp.post("${ctx}/jcda_ygda/jcdaryda/save",$('#inputForm').serialize(),function(data){
+                    if(data.success){
+                        parent.refresh();
+                        var dialogIndex = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                        parent.layer.close(dialogIndex);
+                        jp.toastr_success(data.msg)
+
+                    }else{
+                        jp.toastr_error(data.msg);
+                    }
+                    jp.close(index);
+                })
+			}
+
+        }
+	</script>
+<div class="white-box">
+		<form id="inputForm"  method="post" class="form-horizontal">
+		<input type="hidden" name="id" value="${jcdaryda.id!}"/>
+		<table class="table table-bordered">
+		   <tbody>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">组织架构：</label></td>
+					<td class="width-35">
+						<#treeselect id="jgId" name="jgId.id" value="${jcdaryda.jgId.id!}" labelName="jgId.name" labelValue="${jcdaryda.jgId.name!}"
+							title="部门" url="/sys/office/treeData?type=2" class="jp-input " allowClear="true" notAllowSelectParent="true"/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">员工编号：</label></td>
+					<td class="width-35">
+						<input name="code" value="${jcdaryda.code!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">员工姓名：</label></td>
+					<td class="width-35">
+						<input name="name" value="${jcdaryda.name!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">登记编号：</label></td>
+					<td class="width-35">
+						<input name="regcode" value="${jcdaryda.regcode!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">卡片编号：</label></td>
+					<td class="width-35">
+						<input name="cardno" value="${jcdaryda.cardno!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">入职日期：</label></td>
+					<td class="width-35">
+						<input name="enterdate" value="${jcdaryda.enterdate!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">性别：</label></td>
+					<td class="width-35">
+						<input name="sex" value="${jcdaryda.sex!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">民族：</label></td>
+					<td class="width-35">
+						<input name="national" value="${jcdaryda.national!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">证件编号：</label></td>
+					<td class="width-35">
+						<input name="certificate" value="${jcdaryda.certificate!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">电话号码：</label></td>
+					<td class="width-35">
+						<input name="telephone" value="${jcdaryda.telephone!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">员工状态：</label></td>
+					<td class="width-35">
+						<input name="personstate" value="${jcdaryda.personstate!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">出生日期：</label></td>
+					<td class="width-35">
+						<input name="birthdate" value="${jcdaryda.birthdate!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">职务：</label></td>
+					<td class="width-35">
+						<input name="position" value="${jcdaryda.position!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">工种：</label></td>
+					<td class="width-35">
+						<input name="worktpye" value="${jcdaryda.worktpye!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">照片：</label></td>
+					<td class="width-35">
+						<input name="photo" value="${jcdaryda.photo!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">备注：</label></td>
+					<td class="width-35">
+						<input name="remark" value="${jcdaryda.remark!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">地址：</label></td>
+					<td class="width-35">
+						<input name="address" value="${jcdaryda.address!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">班次：</label></td>
+					<td class="width-35">
+						<input name="shift" value="${jcdaryda.shift!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">周末：</label></td>
+					<td class="width-35">
+						<input name="weekday" value="${jcdaryda.weekday!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">注册类型：</label></td>
+					<td class="width-35">
+						<input name="regtype" value="${jcdaryda.regtype!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">个人注册信息：</label></td>
+					<td class="width-35">
+						<input name="regpersonal" value="${jcdaryda.regpersonal!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">设备名称：</label></td>
+					<td class="width-35">
+						<#gridselect url="${ctx}/jcda_sbgl_view/jcdaSbglView/data" id="sb" name="sb.id" value="${jcdaryda.sb.id!}" labelName="sb.name" labelValue="${jcdaryda.sb.name!}"
+							 title="选择设备名称" class="jp-input " fieldLabels="名称" fieldKeys="name" searchLabels="名称" searchKeys="name" />
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">区域：</label></td>
+					<td class="width-35">
+						<#treeselect id="qy" name="qy.id" value="${jcdaryda.qy.id!}" labelName="qy.name" labelValue="${jcdaryda.qy.name!}"
+							title="区域" url="/sys/area/treeData" class="jp-input " allowClear="true" notAllowSelectParent="true"/>
+				</td>
+					<td class="width-15 active"></td>
+		   			<td class="width-35" ></td>
+		  		</tr>
+		 	</tbody>
+		</table>
+		</form>
+</div>
+<% } %>

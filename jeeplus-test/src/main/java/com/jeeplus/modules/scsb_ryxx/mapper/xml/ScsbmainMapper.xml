@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.scsb_ryxx.mapper.ScsbmainMapper">
+    
+	<sql id="scsbmainColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.area AS "area.id",
+		a.org AS "org.id",
+		a.userorg AS "userorg.id",
+		a.code AS "code",
+		a.name AS "name",
+		a.idcard AS "idcard",
+		a.sex AS "sex",
+		a.usertype AS "usertype",
+		a.contact AS "contact",
+		a.department AS "department.id",
+		a.headphoto AS "headphoto",
+		a.zdy1 AS "zdy1",
+		a.zdy2 AS "zdy2",
+		a.zdy3 AS "zdy3",
+		a.zdy4 AS "zdy4",
+		a.zdy5 AS "zdy5",
+		a.zdy6 AS "zdy6",
+		a.zdy7 AS "zdy7",
+		a.zdy8 AS "zdy8",
+		a.zdy9 AS "zdy9",
+		a.zdy10 AS "zdy10",
+		a.personstate AS "personstate",
+		org.name AS "org.name",
+		userorg.name AS "userorg.name"
+	</sql>
+	
+	<sql id="scsbmainJoins">
+
+		LEFT JOIN sys_office org ON org.id = a.org
+		LEFT JOIN sys_office userorg ON userorg.id = a.userorg
+	</sql>
+	
+    
+	<select id="get" resultType="Scsbmain" >
+		SELECT 
+			<include refid="scsbmainColumns"/>
+		FROM scsb_main a
+		<include refid="scsbmainJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Scsbmain" >
+		SELECT 
+			<include refid="scsbmainColumns"/>
+		FROM scsb_main a
+		<include refid="scsbmainJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Scsbmain" >
+		SELECT 
+			<include refid="scsbmainColumns"/>
+		FROM scsb_main a
+		<include refid="scsbmainJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scsb_main(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			area,
+			org,
+			userorg,
+			code,
+			name,
+			idcard,
+			sex,
+			usertype,
+			contact,
+			department,
+			headphoto,
+			zdy1,
+			zdy2,
+			zdy3,
+			zdy4,
+			zdy5,
+			zdy6,
+			zdy7,
+			zdy8,
+			zdy9,
+			zdy10,
+			personstate
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{area.id},
+			#{org.id},
+			#{userorg.id},
+			#{code},
+			#{name},
+			#{idcard},
+			#{sex},
+			#{usertype},
+			#{contact},
+			#{department.id},
+			#{headphoto},
+			#{zdy1},
+			#{zdy2},
+			#{zdy3},
+			#{zdy4},
+			#{zdy5},
+			#{zdy6},
+			#{zdy7},
+			#{zdy8},
+			#{zdy9},
+			#{zdy10},
+			#{personstate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scsb_main SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			area = #{area.id},
+			org = #{org.id},
+			userorg = #{userorg.id},
+			code = #{code},
+			name = #{name},
+			idcard = #{idcard},
+			sex = #{sex},
+			usertype = #{usertype},
+			contact = #{contact},
+			department = #{department.id},
+			headphoto = #{headphoto},
+			zdy1 = #{zdy1},
+			zdy2 = #{zdy2},
+			zdy3 = #{zdy3},
+			zdy4 = #{zdy4},
+			zdy5 = #{zdy5},
+			zdy6 = #{zdy6},
+			zdy7 = #{zdy7},
+			zdy8 = #{zdy8},
+			zdy9 = #{zdy9},
+			zdy10 = #{zdy10},
+			personstate = #{personstate}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM scsb_main
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE scsb_main SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="Scsbmain" statementType="STATEMENT">
+		select * FROM scsb_main  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

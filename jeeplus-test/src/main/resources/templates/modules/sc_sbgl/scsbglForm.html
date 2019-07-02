@@ -1,0 +1,103 @@
+<%
+layout("/include/_dialog.html"){
+%>
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+					        $('#kssj').datetimepicker({
+				 format:'Y-m-d H:i'
+		    });
+	        $('#jssj').datetimepicker({
+				 format:'Y-m-d H:i'
+		    });
+		});
+
+		function save() {
+            var isValidate = jp.validateForm('#inputForm');//校验表单
+            if(!isValidate){
+                return false;
+			}else{
+                var index = jp.loading();
+                jp.post("${ctx}/sc_sbgl/scsbgl/save",$('#inputForm').serialize(),function(data){
+                    if(data.success){
+                        parent.refresh();
+                        var dialogIndex = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                        parent.layer.close(dialogIndex);
+                        jp.toastr_success(data.msg)
+
+                    }else{
+                        jp.toastr_error(data.msg);
+                    }
+                    jp.close(index);
+                })
+			}
+
+        }
+
+	</script>
+<div class="white-box">
+		<form id="inputForm"  method="post" class="form-horizontal">
+		<input type="hidden" name="id" value="${scsbgl.id!}"/>
+		<table class="table table-bordered">
+		   <tbody>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">区域：</label></td>
+					<td class="width-35">
+				<div class=" input-group" style=" width: 100%;">
+					  <input name="area"  value="${scsbgl.area!}"  class="" data-toggle="city-picker" style="height: 34px;"/>
+				</div>
+				</td>
+					<td class="width-15 active"><label class="pull-right">机构：</label></td>
+					<td class="width-35">
+						<#treeselect id="org" name="org.id" value="${scsbgl.org.id!}" labelName="org.name" labelValue="${scsbgl.org.name!}"
+							title="部门" url="/sys/office/treeData?type=2" class="jp-input " allowClear="true" notAllowSelectParent="true"/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">使用机构：</label></td>
+					<td class="width-35">
+						<#treeselect id="userorg" name="userorg.id" value="${scsbgl.userorg.id!}" labelName="userorg.name" labelValue="${scsbgl.userorg.name!}"
+							title="部门" url="/sys/office/treeData?type=2" class="jp-input " allowClear="true" notAllowSelectParent="true"/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">位置：</label></td>
+					<td class="width-35">
+						<input name="location" value="${scsbgl.location!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">序列号：</label></td>
+					<td class="width-35">
+						<input name="arry" value="${scsbgl.arry!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">开始使用时间：</label></td>
+					<td class="width-35">
+						<span class="jp-calendar-picker">
+								<input readonly=""  id="kssj" name="kssj"  placeholder="请选择日期" class="jp-calendar-picker-input jp-input   "   value="${fn.formatDate(scsbgl.kssj!, 'yyyy-MM-dd HH:mm:ss')}">
+								<span class="jp-calendar-picker-icon"></span>
+						</span>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">到期结束时间：</label></td>
+					<td class="width-35">
+						<span class="jp-calendar-picker">
+								<input readonly=""  id="jssj" name="jssj"  placeholder="请选择日期" class="jp-calendar-picker-input jp-input   "   value="${fn.formatDate(scsbgl.jssj!, 'yyyy-MM-dd HH:mm:ss')}">
+								<span class="jp-calendar-picker-icon"></span>
+						</span>
+				</td>
+					<td class="width-15 active"><label class="pull-right">状态：</label></td>
+					<td class="width-35">
+						<#select path="state" value="${scsbgl.state!}" items="${fn.getDictList('state')}" itemLabel="label" itemValue="value" class=""/>
+				</td>
+				</tr>
+		 	</tbody>
+		</table>
+		<div class="tabs-container">
+            <ul class="nav customtab nav-tabs" role="tablist">
+            </ul>
+            <div class="tab-content">
+		</div>
+		</div>
+		</form>
+</div>
+<% } %>

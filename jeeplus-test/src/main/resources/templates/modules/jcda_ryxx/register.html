@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>注册</title>
+		<link rel="stylesheet" href="${ctxStatic}/layui/css/layui.css" />
+	</head>
+	<body>
+		<div class="layui-container">
+			<div class="layui-form">
+				<input hidden="hidden" id="personid" value="${jcdasbyhxx.id!}" />
+				<input hidden="hidden" id="sbid" value="${jcdasbyhxx.sb.id!}" />
+				<input hidden="hidden" id="faceid" value="${photo.faceId!}" />
+				<div class="layui-form-item">
+					<div class="layui-inline">
+					  <label class="layui-form-label">设备</label>
+					  <div class="layui-input-inline">
+						<input type="text" class="layui-input" readonly="readonly" value="${jcdasbyhxx.sb.name!}">
+					  </div>
+					</div>
+					<div class="layui-inline">
+					  <label class="layui-form-label">员工姓名</label>
+					  <div class="layui-input-inline">
+						<input type="text"  class="layui-input" readonly="readonly" value="${jcdasbyhxx.name!}">
+					  </div>
+					</div>
+					<div class="layui-inline">
+					  <label class="layui-form-label">卡号</label>
+					  <div class="layui-input-inline">
+						<input type="text" class="layui-input" readonly="readonly" value="${jcdasbyhxx.code!}">
+					  </div>
+					</div>
+				  </div>
+			</div>
+			<div class="layui-tab">
+			  <ul class="layui-tab-title">
+				<li class="layui-this">联机注册</li>
+				<li>图片注册</li>
+			  </ul>
+			  <div class="layui-tab-content">
+				<div class="layui-tab-item layui-show">
+					<div class="layui-row" style="height: 500px;">
+						<div class="layui-col-xs5 layui-col-sm5 layui-col-md5">
+						  <div class="layui-upload">
+							  <div class="layui-upload-list">
+								
+							  </div>
+							  <button type="button" class="layui-btn" id="registerOnline" >联机注册</button>
+							  <button type="button" class="layui-btn" id="getRegisterOnline" >获取注册信息</button>
+							</div>   
+						</div>
+						<div class="layui-col-xs2  layui-col-sm2 layui-col-md2" style="height: 100%;">
+						  <div style="height: 100%;margin: 0 auto;width: 1px; background-color: #000000;"></div>
+						</div>
+						<div class="layui-col-xs5  layui-col-sm5 layui-col-md5">
+						  <img class="layui-upload-img" id="view1" src="${photo.path!}" width="400" height="400" style="display: block;margin:auto;">
+						  <button type="button" class="layui-btn deleteImage" style="display:block;margin: 10px auto;">删除图片</button>
+						</div>
+					</div>
+				</div>
+				<div class="layui-tab-item">
+					<div class="layui-row" style="height: 500px;">
+						<div class="layui-col-xs5 layui-col-sm5 layui-col-md5">
+						  <div class="layui-upload">
+							  <!-- <div class="layui-upload-list">
+								<img class="layui-upload-img" id="demo1" width="200" height="200" style="display: block;margin: 0 auto;">
+							  </div> -->
+							  <div class="layui-upload-drag" id="demo1" style="margin: 10px auto;display: block;width: 100px;height: 100px;">
+							  	  <img class="layui-upload-img" style="display: none;" id="image1" width="100%" height="100%">
+								  <div id="imageFlag">
+									  <i class="layui-icon layui-icon-upload"></i>
+									  <p style="text-align: center;">点击上传</p>								  
+								  </div>
+								</div>
+							  <button type="button" class="layui-btn" id="imgRegister" style="display: block;margin: 0 auto;">注册</button>
+							</div>   
+						</div>
+						<div class="layui-col-xs2  layui-col-sm2 layui-col-md2" style="height: 100%;">
+						  <div style="height: 100%;margin: 0 auto;width: 1px; background-color: #000000;"></div>
+						</div>
+						<div class="layui-col-xs5  layui-col-sm5 layui-col-md5">
+						  <img class="layui-upload-img" id="view2" src="${photo.path!}" width="400" height="400" style="display: block;margin:auto;">
+						  <button type="button" class="layui-btn deleteImage" style="display:block;margin: 10px auto;">删除图片</button>
+						</div>
+					</div>
+				</div>
+			  </div>
+			</div>
+		</div>
+		<script src="${ctxStatic}/layui/layui.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			layui.use(['element','layer','upload'],function(){
+				var element = layui.element,layer = layui.layer,
+				upload=layui.upload,jq= layui.jquery;
+				var imageBase = "",personId=jq('#personid').val(),sbId=jq('#sbid').val();
+				//普通图片上传
+				  var uploadInst = upload.render({
+					elem: '#demo1'
+					,url: '${ctx}/jcda_ryxx/jcdaygxx/acceptImage'
+					,before: function(obj){
+					  //预读本地文件示例，不支持ie8
+					  obj.preview(function(index, file, result){
+						console.log(file);
+						jq('#image1').attr('src', result); //图片链接（base64）
+						jq('#image1').show();
+						jq('#imageFlag').hide();
+						imageBase = result;
+						console.log(imageBase);
+					  });
+					}
+					,error: function(){
+					  
+					}
+				  });
+				jq("#imgRegister").on('click',function(){
+					if(imageBase==""){
+						layer.msg('请先上传图片');
+						return false;
+					}
+					var index = top.layer.msg('正在注册....', {
+						icon:16,
+						shade:[0.1, '#fff'],
+						time:false  //取消自动关闭
+					});
+					var faceId=jq('#faceid').val();
+					var data = {"sbId":sbId,"personId":personId,"imgStr":imageBase,"faceId":faceId};
+					jq.post('${ctx}/jcda_ryxx/jcdaygxx/registerImage',data,function(rs){
+						top.layer.close(index);
+						if(rs.success){
+							jq('#view2').attr('src', imageBase);
+							layer.msg(rs.msg);
+							jq("#faceid").val(rs.action);
+						}else{
+							layer.alert(rs.msg);
+						}
+					});
+				});
+				jq("#registerOnline").on('click',function(){
+					var index = top.layer.msg('正在打开设备摄像头....', {
+						icon:16,
+						shade:[0.1, '#fff'],
+						time:false  //取消自动关闭
+					});
+					var data = {"sbId":sbId,"personId":personId}
+					jq.post('${ctx}/jcda_ryxx/jcdaygxx/registerOnline',data,function(rs){
+						top.layer.close(index);
+						if(rs.success){
+							layer.msg(rs.msg);
+						}else{
+							layer.alert(rs.msg);
+						}
+					});
+				});
+				jq("#getRegisterOnline").on('click',function(){
+					var index = top.layer.msg('获取中....', {
+						icon:16,
+						shade:[0.1, '#fff'],
+						time:false  //取消自动关闭
+					});
+					var data = {"sbId":sbId,"personId":personId}
+					jq.post('${ctx}/jcda_ryxx/jcdaygxx/getRegisterOnline',data,function(rs){
+						top.layer.close(index);
+						if(rs.success){
+							layer.msg(rs.msg);
+							jq('#view1').attr('src', rs.url);
+							jq("#faceid").val(rs.action);
+						}else{
+							layer.alert(rs.msg);
+						}
+					});
+				});
+				
+				jq(".deleteImage").on('click',function(){
+					var faceId=jq('#faceid').val();
+					if(faceId==''){
+						return false;
+					}
+					var index = top.layer.msg('删除中....', {
+						icon:16,
+						shade:[0.1, '#fff'],
+						time:false  //取消自动关闭
+					});
+					jq.post('${ctx}/jcda_ryxx/jcdaygxx/deleteImage',{"faceId":faceId,"sbId":sbId},function(rs){
+						top.layer.close(index);
+						if(rs.success){
+							jq('#view1').removeAttr('src');
+							jq('#view2').removeAttr('src');
+							jq("#faceid").val("")
+						}else{
+							layer.alert(rs.msg);
+						}
+					});
+				});
+			});
+		</script>
+	</body>
+</html>

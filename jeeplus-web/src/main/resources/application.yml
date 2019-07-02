@@ -1,0 +1,159 @@
+server:
+  port: 8005
+  tomcat:
+    uri-encoding: UTF-8
+    basedir: /Users/liugf
+    max-threads: 2000
+    min-spare-threads: 10
+    accesslog:
+      pattern: common
+      enabled: true
+      directory: logs
+      prefix: jeeplus_access_log
+      suffix: .log
+      request-attributes-enabled: true
+      rename-on-rotate: true
+logging:
+  level:
+    root: INFO
+    com.jeeplus: DEBUG
+    com.baomidou: DEBUG
+    org.apache.shiro.cache.ehcache.EhCacheManager: WARN
+spring:
+  devtools:
+    restart:
+      enabled: true
+  profiles:
+    active: dev
+    http:
+      multipart:
+        maxFileSize: 100Mb
+        maxRequestSize: 100Mb
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+  datasource:
+      dynamic:
+#        p6spy: true # 默认false,建议线上关闭。与多数据源插件冲突，停止使用
+        druid: # 全局druid参数，绝大部分值和默认保持一致。(现已支持的参数如下,不清楚含义不要乱设置)
+          validation-query: select 'x'
+          filters: stat # 注意这个值和druid原生不一致，默认启动了stat,wall
+        datasource:
+          master:
+            username: root
+            password: root
+            url: jdbc:mysql://127.0.0.1:3306/test-qgkj-boot?useUnicode=true&characterEncoding=utf-8&useSSL=false
+            driver-class-name: com.mysql.jdbc.Driver
+
+            #oracle database settings
+            #username: root
+            #password: root
+            #url: jdbc:oracle:thin:@127.0.0.1:1521:orcl
+            #driver-class-name: oracle.jdbc.driver.OracleDriver
+            #testSql=SELECT 'x' FROM DUAL
+
+            ##mssql database settings
+            #username: root
+            #password: 123456
+            #driver-class-name: net.sourceforge.jtds.jdbc.Driver
+            #url: jdbc:jtds:sqlserver://localhost:54931/jeeplus_ani_big
+#spring-ehcache的配置
+  cache:
+    type: redis
+    ehcache:
+      config: classpath:ehcache.xml
+    redis:
+      host: localhost
+      port: 6379
+      expireTime: 3600000 #单位秒
+  mvc.servlet.load-on-startup: 1
+#mybatis的配置
+mybatis:
+  config-location: classpath:/mybatis/mybatis-config.xml
+  mapper-locations: classpath*:com/jeeplus/modules/**/*Mapper.xml
+  type-aliases-package: com.jeeplus.modules
+
+
+beetlsql:
+  enabled: false
+#============================#
+#===== System settings ======#
+#============================#
+
+#产品信息设置
+copyrightYear: 2017
+version: springboot2.0
+#演示模式: 不能操作和保存的模块： sys
+demoMode: false
+#管理基础路径, 需同步修改：web.xml
+adminPath: /a
+#前端基础路径
+frontPath: /f
+#网站URL后缀
+urlSuffix: .html
+#分页配置
+page.pageSize: 10
+#静态文件后缀
+web.staticFile: .css,.js,.png,.jpg,.gif,.jpeg,.bmp,.ico,.swf,.psd,.htc,.htm,.html,.crx,.xpi,.exe,.ipa,.apk
+projectPath:
+#上传文件绝对路径, 路径中不允许包含“userfiles”
+#userfiles.basedir: /Users/liugf/Documents/1/2
+
+
+
+#============================#
+#===== ureport settings =====#
+#============================#
+# ureport Mysql 存储
+ureport.mysql.provider:
+  prefix: jeeplus-
+  disabled: false
+
+# FTP 配置
+ftp:
+ factory:
+  hostname: 192.168.1.1
+  port: 21
+  username:
+  password:
+  client-timeout: 10000
+  encoding: utf8
+#  retry-times:
+#  passive-mode:
+#  file-type:
+#  rename-uploaded: true
+
+# ureport FTP 存储
+ureport:
+  ftp:
+    provider:
+      prefix: ftp-
+      disabled: false
+      basePath: ureport_file\
+
+
+
+ #===============================#
+ #====== 产品信息 ================#
+ #===============================#
+
+# 产品授权
+productId: Y2019013063
+license: 6FDA2E691236F518DAC8BB71D0B0F043F74265F7D919BBC97433633BAA15EB09C02FA74B22ECC945953E6A696A44B39A72E6CDB1C3E8BD9FE0AB92C02022DE12
+
+
+#=======================================================================#
+#===== plugin设置 =====#
+#Plugin插件会读取该core和admin包下的基础类，如果修改了路径或者类名，请同步修改这里
+#=======================================================================#
+plugin:
+  Plugin: com.jeeplus.plugin.ExPlugin
+  PluginPool: com.jeeplus.plugin.PluginPool
+  Page: com.jeeplus.core.persistence.Page
+  User: com.jeeplus.modules.sys.entity.User
+  Area: com.jeeplus.modules.sys.entity.Area
+  Office: com.jeeplus.modules.sys.entity.Office
+  DictUtils: com.jeeplus.modules.sys.utils.DictUtils
+  UserUtils: com.jeeplus.modules.sys.utils.UserUtils
+
+
+

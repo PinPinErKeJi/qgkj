@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.scgl_sbqk.mapper.ScglsbqkMapper">
+    
+	<sql id="scglsbqkColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.org AS "org.id",
+		a.sbname AS "sbname",
+		a.sbkssj AS "sbkssj",
+		a.sbjssj AS "sbjssj",
+		a.sbzt AS "sbzt",
+				
+				
+				
+				
+				
+				
+				
+		org.name AS "org.name"
+	</sql>
+	
+	<sql id="scglsbqkJoins">
+		
+		LEFT JOIN sys_office org ON org.id = a.org
+	</sql>
+	
+    
+	<select id="get" resultType="Scglsbqk" >
+		SELECT 
+			<include refid="scglsbqkColumns"/>
+		FROM scgl_sbqk a
+		<include refid="scglsbqkJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Scglsbqk" >
+		SELECT 
+			<include refid="scglsbqkColumns"/>
+		FROM scgl_sbqk a
+		<include refid="scglsbqkJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="org != null and org.id != null and org.id != ''">
+				AND a.org = #{org.id}
+			</if>
+			<if test="sbname != null and sbname != ''">
+				AND a.sbname LIKE 
+					<if test="_databaseId == 'oracle'">'%'||#{sbname}||'%'</if>
+					<if test="_databaseId == 'mssql'">'%'+#{sbname}+'%'</if>
+					<if test="_databaseId == 'mysql'">concat('%',#{sbname},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Scglsbqk" >
+		SELECT 
+			<include refid="scglsbqkColumns"/>
+		FROM scgl_sbqk a
+		<include refid="scglsbqkJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scgl_sbqk(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			org,
+			sbname,
+			sbkssj,
+			sbjssj,
+			sbzt
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{org.id},
+			#{sbname},
+			#{sbkssj},
+			#{sbjssj},
+			#{sbzt}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scgl_sbqk SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			org = #{org.id},
+			sbname = #{sbname},
+			sbkssj = #{sbkssj},
+			sbjssj = #{sbjssj},
+			sbzt = #{sbzt}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM scgl_sbqk
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE scgl_sbqk SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="Scglsbqk" statementType="STATEMENT">
+		select * FROM scgl_sbqk  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

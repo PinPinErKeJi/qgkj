@@ -1,0 +1,4 @@
+
+
+${AnsiColor.BRIGHT_BLUE}:: hzqnwl 🤓  :: Running Spring Boot ${spring-boot.version} ::
+:: https://www.hzqnwl.com ::${AnsiColor.DEFAULT}

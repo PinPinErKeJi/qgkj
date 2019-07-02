@@ -1,0 +1,69 @@
+<%
+layout("/include/_dialog.html"){
+%>
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+					});
+
+		function save() {
+            var isValidate = jp.validateForm('#inputForm');//校验表单
+            if(!isValidate){
+                return false;
+			}else{
+                var index = jp.loading();
+                jp.post("${ctx}/scgl_sbqk/scglsbqk/save",$('#inputForm').serialize(),function(data){
+                    if(data.success){
+                        parent.refresh();
+                        var dialogIndex = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                        parent.layer.close(dialogIndex);
+                        jp.toastr_success(data.msg)
+
+                    }else{
+                        jp.toastr_error(data.msg);
+                    }
+                    jp.close(index);
+                })
+			}
+
+        }
+	</script>
+<div class="white-box">
+		<form id="inputForm"  method="post" class="form-horizontal">
+		<input type="hidden" name="id" value="${scglsbqk.id!}"/>
+		<table class="table table-bordered">
+		   <tbody>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">单位：</label></td>
+					<td class="width-35">
+						<#treeselect id="org" name="org.id" value="${scglsbqk.org.id!}" labelName="org.name" labelValue="${scglsbqk.org.name!}"
+							title="部门" url="/sys/office/treeData?type=2" class="jp-input " allowClear="true" notAllowSelectParent="true"/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">设备名称：</label></td>
+					<td class="width-35">
+						<input name="sbname" value="${scglsbqk.sbname!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">设备开始时间：</label></td>
+					<td class="width-35">
+						<input name="sbkssj" value="${scglsbqk.sbkssj!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"><label class="pull-right">设备结束时间：</label></td>
+					<td class="width-35">
+						<input name="sbjssj" value="${scglsbqk.sbjssj!}"    class="jp-input "/>
+				</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">设备状态：</label></td>
+					<td class="width-35">
+						<input name="sbzt" value="${scglsbqk.sbzt!}"    class="jp-input "/>
+				</td>
+					<td class="width-15 active"></td>
+		   			<td class="width-35" ></td>
+		  		</tr>
+		 	</tbody>
+		</table>
+		</form>
+</div>
+<% } %>

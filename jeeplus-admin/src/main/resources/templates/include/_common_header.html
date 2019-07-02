@@ -1,0 +1,143 @@
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<title>${fn.getProductName()}</title>
+	<!-- 设置浏览器图标 -->
+	<link rel="icon" href="${ctxStatic}/common/img/ico.png" type="image/x-icon">
+	<!--awesome-->
+	<link href="${ctxStatic}/plugin/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+	<link href="${ctxStatic}/common/dist/core.css" rel="stylesheet">
+	<script src="${ctxStatic}/common/dist/core.js"></script>
+
+
+   <link href="${ctxStatic}/plugin/bootstrap-treetable/bootstrap-treetable.css" rel="stylesheet" type="text/css" />
+    <script src="${ctxStatic}/plugin/bootstrap-treetable/bootstrap-treetable.js"></script>
+
+
+	<!-- 引入layer插件,当做独立组件使用，不使用layui模块 -->
+	<script src="${ctxStatic}/plugin/layui/layer/layer.js"></script>
+	<script src="${ctxStatic}/plugin/layui/laytpl/laytpl.js"></script>
+
+	<link rel="stylesheet" href="${ctxStatic}/plugin/treeSelect/dist/treeSelect.css"/>
+	<script src="${ctxStatic}/plugin/treeSelect/dist/treeSelect.js"></script>
+
+	<!--引入webuploader-->
+	<link rel="stylesheet" type="text/css" href="${ctxStatic}/plugin/webuploader-0.1.5/webuploader.css">
+	<script type="text/javascript" src="${ctxStatic}/plugin/webuploader-0.1.5/webuploader.js"></script>
+	<script src="${ctxStatic}/plugin/echarts4/echarts.min.js"></script>
+
+	<script type="text/javascript">var ctx = '${ctx}', ctxStatic='${ctxStatic}';</script>
+	<!-- animation CSS -->
+	<!-- Custom CSS -->
+	<!--<link href="${ctxStatic}/common/css/antdesign2.css" rel="stylesheet">-->
+	<!-- color CSS -->
+	<link href="${ctxStatic}/common/css/colors/${fn.getCookie(request,'theme') == null?fn.getDefaultTheme():fn.getCookie(request,'theme')}.css" id="theme" rel="stylesheet">
+	<script src="${ctxStatic}/common/js/jeeplus.js"></script>
+
+
+	<script src="${ctxStatic}/plugin/ace/ace.js" type="text/javascript"></script>
+
+
+	<!--字体引入-->
+	<link href="${ctxStatic}/plugin/fonts-icon/iconfont.css" rel="stylesheet">
+	<script src="${ctxStatic}/plugin/fonts-icon/iconfont.js" type="text/javascript"></script>
+
+	<!--wizard-->
+	<link href="${ctxStatic}/plugin/jquery-wizard-master/css/wizard.css" rel="stylesheet">
+	<script src="${ctxStatic}/plugin/jquery-wizard-master/dist/jquery-wizard.min.js"></script>
+	<link rel="stylesheet" href="${ctxStatic}/plugin/jquery-wizard-master/libs/formvalidation/formValidation.min.css">
+	<script src="${ctxStatic}/plugin/jquery-wizard-master/libs/formvalidation/formValidation.min.js"></script>
+	<script src="${ctxStatic}/plugin/jquery-wizard-master/libs/formvalidation/bootstrap.min.js"></script>
+
+	<script>
+		/**
+		 * 全局刷新需要执行的初始化函数
+		 * */
+		function initGlobalSetting(){
+            $("#right-side-toggle").on("click", function () {
+                $(".right-sidebar").slideDown(50).toggleClass("shw-rside");
+            });
+
+            $('[data-toggle="city-picker"]').citypicker();
+           jQuery.datetimepicker.setLocale('zh');
+
+            // color selector
+            $('#themecolors').on('click', 'a', function () {
+                $('#themecolors li a').parent().removeClass('working');
+                $(this).parent().addClass('working');
+                var theme = $(this).attr("data-theme");
+                changeTheme(theme);
+            });
+
+            initPageSetting();
+		}
+
+        /**
+		 * pjax 部分刷新，内容面板部分的初始化函数要添加到此。
+         */
+		function initPageSetting(){
+            //按钮特效
+            $(".jp-btn").click(function () {
+                var _this =this;
+                if(_this.hasAttribute("jp-click-animating-without-extra-node")){
+                    $(_this).removeAttr("jp-click-animating-without-extra-node");
+                    setTimeout(function () {
+                        $(_this).attr("jp-click-animating-without-extra-node", true);
+                    },50)
+                }else{
+                    $(_this).attr("jp-click-animating-without-extra-node", true);
+
+                    setTimeout(function () {
+                        $(_this).removeAttr("jp-click-animating-without-extra-node");
+                    },500)
+                }
+
+            });
+
+            $('[data-toggle="city-picker"]').citypicker();
+
+            $('.js-switch').each(function() {
+                new Switchery($(this)[0], $(this).data());
+            });
+		}
+
+
+        $(document).ready(function () {
+
+
+            $(document).on('pjax:send', function () { //pjax链接点击后显示加载动画；
+                //loading层
+                var height = $(window).height();
+                var width = $(window).width();
+                $("#loading").css("top", height/2-60);
+                $("#loading").css("left", width/2-20);
+                $("#loading").show();
+                $(".jp-spin-container").addClass("jp-spin-blur");
+            });
+            $(document).on('pjax:complete', function () { //pjax链接加载完成后隐藏加载动画；
+                $("#loading").hide();
+                $(".jp-spin-container").removeClass("jp-spin-blur");
+				initPageSetting();
+
+            });
+            $(document).pjax('a[data-pjax][target!="_blank"], button[data-pjax]', '#container', {push:true, replace:false,fragment: '#container',maxCacheLength:0, timeout: 10000});
+
+            initGlobalSetting();
+        });
+
+
+        function changeTheme(currentStyle) {
+            $('#theme').attr({
+                href: '${ctxStatic}/common/css/colors/' + currentStyle + '.css'
+            })
+            $.get('${ctx}/theme/'+currentStyle+'?url='+window.top.location.href,function(result){
+            });
+        }
+	</script>
+</head>
+
+
